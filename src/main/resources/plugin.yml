@@ -9,3 +9,10 @@ commands:
     description: Hoofdcommand van ParkCore
     usage: /parkcore
     aliases: [pc, park]
+permissions:
+    parkcore.admin:
+        description: Toegang tot alle ParkCore admin commando's
+        default: op
+    parkcore.reload:
+        description: Toegang tot het herladen van de ParkCore configuratie
+        default: op
