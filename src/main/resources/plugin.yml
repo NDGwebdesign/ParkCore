@@ -1,0 +1,5 @@
+name: ParkCore
+version: '1.0'
+main: net.ndgwebdesign.parkCore.ParkCore
+api-version: '1.21'
+authors: [ FriendsparkMC, NDG-webdesign ]
