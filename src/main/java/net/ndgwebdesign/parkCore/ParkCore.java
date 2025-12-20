@@ -1,5 +1,6 @@
 package net.ndgwebdesign.parkCore;
 
+import net.ndgwebdesign.parkCore.commands.ParkCoreCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -14,6 +15,9 @@ public final class ParkCore extends JavaPlugin {
         printStartupBanner();
 
         saveDefaultConfig();
+
+        getCommand("parkcore").setExecutor(new ParkCoreCommand());
+
 
         Bukkit.getLogger().info("[ParkCore] Successfully enabled!");
     }

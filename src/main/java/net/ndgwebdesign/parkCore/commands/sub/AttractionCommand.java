@@ -1,0 +1,24 @@
+package net.ndgwebdesign.parkCore.commands.sub;
+
+import net.ndgwebdesign.parkCore.functions.attractions.CreateAttraction;
+import org.bukkit.command.CommandSender;
+
+public class AttractionCommand {
+
+    private final CreateAttraction createAttraction = new CreateAttraction();
+
+    public boolean handle(CommandSender sender, String[] args) {
+
+        if (args.length < 2) {
+            sender.sendMessage("§e/parkcore att create <region> <naam>");
+            return true;
+        }
+
+        if (args[1].equalsIgnoreCase("create")) {
+            return createAttraction.execute(sender, args);
+        }
+
+        sender.sendMessage("§cOnbekend attraction command.");
+        return true;
+    }
+}
