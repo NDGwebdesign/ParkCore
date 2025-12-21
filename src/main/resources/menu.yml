@@ -1,0 +1,22 @@
+menu:
+  title: "&6ParkCore Menu"
+  size: 27
+
+  items:
+    attraction:
+      slot: 12
+      material: MINECART
+      name: "&eAttracties"
+      lore:
+        - "&7Bekijk alle attracties"
+        - "&7en wachttijden"
+      action: ATTRACTION_MENU
+
+    audio:
+      slot: 14
+      material: NOTE_BLOCK
+      name: "&bAudio"
+      lore:
+        - "&7Open Audio instellingen"
+      action: COMMAND
+      command: "audio"

@@ -1,7 +1,6 @@
 package net.ndgwebdesign.parkCore.managers;
 
 import net.ndgwebdesign.parkCore.ParkCore;
-import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.objects.AttractionStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -10,16 +9,19 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class AttractionManager {
+public class AttractionConfigManager {
 
     private static File file;
     private static FileConfiguration config;
 
+    /**
+     * Zorg dat de config altijd geladen is
+     */
     public static void setup() {
+        if (config != null) return; // al geladen
+
         file = new File(ParkCore.getInstance().getDataFolder(), "attractions.yml");
 
         if (!file.exists()) {
@@ -40,14 +42,18 @@ public class AttractionManager {
         }
     }
 
-    public static FileConfiguration getConfig() { return config; }
+    public static FileConfiguration getConfig() {
+        if (config == null) setup(); // fallback
+        return config;
+    }
 
     public static void saveConfig() {
-        try { config.save(file); }
-        catch (IOException e) { e.printStackTrace(); }
+        if (config == null) setup();
+        try { config.save(file); } catch (IOException e) { e.printStackTrace(); }
     }
 
     public static void reloadConfig() {
+        if (file == null) setup();
         config = YamlConfiguration.loadConfiguration(file);
     }
 
@@ -56,6 +62,7 @@ public class AttractionManager {
     /* ------------------------------ */
 
     public static void addAttraction(String region, String name, AttractionStatus status, Location loc) {
+        setup();
 
         String path = "attractions.regions." + region + "." + name;
 
@@ -72,24 +79,25 @@ public class AttractionManager {
     }
 
     public static boolean regionExists(String region) {
+        setup();
         return config.contains("attractions.regions." + region);
-    }
-    public static boolean attractionExists(String region, String name) {
-        return config.contains("attractions.regions." + region + "." + name);
     }
 
     public static List<String> getAttractions(String region) {
+        setup();
         if (!regionExists(region)) return List.of();
         return List.copyOf(config.getConfigurationSection("attractions.regions." + region).getKeys(false));
     }
 
     public static AttractionStatus getStatus(String region, String name) {
+        setup();
         String path = "attractions.regions." + region + "." + name + ".status";
         String val = config.getString(path, "CLOSED");
         return AttractionStatus.valueOf(val);
     }
 
     public static Location getLocation(String region, String name) {
+        setup();
         String base = "attractions.regions." + region + "." + name + ".location";
         if (!config.contains(base)) return null;
 
@@ -100,4 +108,25 @@ public class AttractionManager {
 
         return new Location(Bukkit.getWorld(world), x, y, z);
     }
+
+    public static boolean removeAttraction(String region, String name) {
+        setup();
+
+        String path = "attractions.regions." + region + "." + name;
+
+        if (!config.contains(path)) {
+            return false;
+        }
+
+        config.set(path, null);
+
+        // Als region leeg is, verwijder region ook (optioneel maar netjes)
+        if (config.getConfigurationSection("attractions.regions." + region).getKeys(false).isEmpty()) {
+            config.set("attractions.regions." + region, null);
+        }
+
+        saveConfig();
+        return true;
+    }
+
 }
