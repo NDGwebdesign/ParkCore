@@ -1,9 +1,7 @@
 package net.ndgwebdesign.parkCore.signs;
 
-import net.ndgwebdesign.parkCore.managers.AttractionManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.objects.AttractionStatus;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Sign;
 
@@ -13,12 +11,15 @@ public class AttractionStatusSign {
 
         if (loc.getBlock().getState() instanceof Sign sign) {
 
+            AttractionStatus status = attraction.getStatus();
+            if (status == null) status = AttractionStatus.CLOSED;
+
             sign.setLine(0, "§6[ParkCore]");
             sign.setLine(1, "§eAttractie");
             sign.setLine(2, "§f" + attraction.getName());
-            sign.setLine(3, formatStatus(attraction.getStatus()));
+            sign.setLine(3, formatStatus(status));
 
-            sign.update();
+            sign.update(true);
         }
     }
 

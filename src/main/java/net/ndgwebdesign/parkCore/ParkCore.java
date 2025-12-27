@@ -1,10 +1,7 @@
 package net.ndgwebdesign.parkCore;
 
 import net.ndgwebdesign.parkCore.commands.ParkCoreCommand;
-import net.ndgwebdesign.parkCore.listeners.MenuClickListener;
-import net.ndgwebdesign.parkCore.listeners.MenuItemListener;
-import net.ndgwebdesign.parkCore.listeners.PlayerJoinListener;
-import net.ndgwebdesign.parkCore.listeners.RidePanelChatListener;
+import net.ndgwebdesign.parkCore.listeners.*;
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
@@ -29,15 +26,18 @@ public final class ParkCore extends JavaPlugin {
         printStartupBanner();
 
         saveDefaultConfig();
-        saveResource("menu.yml", false);
+        saveResource("Menu/menu.yml", false);
         menuConfig = YamlConfiguration.loadConfiguration(
-                new File(getDataFolder(), "menu.yml")
+                new File(getDataFolder(), "Menu/menu.yml")
         );
+
 
         AttractionConfigManager.setup();
 
         // Laad alle attracties
         loadAttractions();
+
+        loadAllConfigFiles();
 
         // Register Commands
         getCommand("parkcore").setExecutor(new ParkCoreCommand());
@@ -47,6 +47,8 @@ public final class ParkCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new MenuItemListener(), this);
         Bukkit.getPluginManager().registerEvents(new MenuClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AttractionMenuClickListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AttractionSignCreateListener(), this);
 
         Bukkit.getLogger().info("[ParkCore] Successfully enabled!");
     }
@@ -63,6 +65,7 @@ public final class ParkCore extends JavaPlugin {
     /* ---------------------------------------------------------------------- */
 
     private void printStartupBanner() {
+
         getLogger().info(" ");
         getLogger().info(" ██████╗  █████╗ ██████╗ ██╗  ██╗  ██████╗ ██████╗ ██████╗ ███████╗");
         getLogger().info(" ██╔══██╗██╔══██╗██╔══██╗██║ ██╔╝ ██╔════╝██╔═══██╗██╔══██╗██╔════╝");
@@ -74,7 +77,7 @@ public final class ParkCore extends JavaPlugin {
         getLogger().info(" ");
         getLogger().info(" ParkCore - Themepark Engine");
         getLogger().info(" Version: " + getDescription().getVersion());
-        getLogger().info(" Author: NDGWebDesign");
+        getLogger().info(" Author: FriendsparkMC, NDGWebDesign");
         getLogger().info(" ");
     }
 
@@ -106,9 +109,6 @@ public final class ParkCore extends JavaPlugin {
 
                 // Voeg toe aan de manager
                 AttractionManager.addAttraction(attraction);
-
-                // Log dat attractie geladen is
-                Bukkit.getLogger().info("[ParkCore] Loaded attraction: " + name + " in region: " + region);
             }
         }
     }
@@ -125,4 +125,18 @@ public final class ParkCore extends JavaPlugin {
         return menuConfig;
     }
 
+    private void loadAllConfigFiles() {
+        loadConfigFile("config.yml");
+        loadConfigFile("attractions.yml");
+    }
+
+    private void loadConfigFile(String name) {
+        File file = new File(getDataFolder(), name);
+        if (!file.exists()) {
+            saveResource(name, false);
+            getLogger().info("Created " + name);
+        } else {
+            getLogger().info("Loaded " + name);
+        }
+    }
 }

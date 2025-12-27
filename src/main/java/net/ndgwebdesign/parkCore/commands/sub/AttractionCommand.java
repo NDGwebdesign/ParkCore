@@ -2,12 +2,15 @@ package net.ndgwebdesign.parkCore.commands.sub;
 
 import net.ndgwebdesign.parkCore.functions.attractions.CreateAttraction;
 import net.ndgwebdesign.parkCore.functions.attractions.DeleteAttraction;
+import net.ndgwebdesign.parkCore.functions.attractions.StatusAttraction;
 import org.bukkit.command.CommandSender;
 
 public class AttractionCommand {
 
     private final CreateAttraction createAttraction = new CreateAttraction();
     private final DeleteAttraction deleteAttraction = new DeleteAttraction();
+    private final StatusAttraction statusAttraction = new StatusAttraction();
+
 
     public boolean handle(CommandSender sender, String[] args) {
 
@@ -24,6 +27,11 @@ public class AttractionCommand {
         if (args[1].equalsIgnoreCase("delete")) {
             return deleteAttraction.execute(sender, args);
         }
+
+        if (args[1].equalsIgnoreCase("status")) {
+            return statusAttraction.execute(sender, args);
+        }
+
 
         sender.sendMessage("§cOnbekend attraction command.");
         return true;

@@ -1,7 +1,9 @@
 package net.ndgwebdesign.parkCore.listeners;
 
 import net.ndgwebdesign.parkCore.ParkCore;
+import net.ndgwebdesign.parkCore.functions.UI.AttractionMenu;
 import net.ndgwebdesign.parkCore.functions.UI.Menu;
+import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,9 +44,16 @@ public class MenuClickListener implements Listener {
                 String action = item.getString("action");
 
                 if ("ATTRACTION_MENU".equalsIgnoreCase(action)) {
-                    player.sendMessage("§eAttractie menu komt binnenkort!");
-                    player.closeInventory();
+                    String firstRegion = AttractionConfigManager
+                            .getConfig()
+                            .getConfigurationSection("attractions.regions")
+                            .getKeys(false)
+                            .iterator()
+                            .next();
+
+                    AttractionMenu.open(player, firstRegion);
                 }
+
 
                 if ("COMMAND".equalsIgnoreCase(action)) {
                     String cmd = item.getString("command");

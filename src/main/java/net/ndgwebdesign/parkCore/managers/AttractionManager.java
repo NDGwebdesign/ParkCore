@@ -2,6 +2,8 @@ package net.ndgwebdesign.parkCore.managers;
 
 import net.ndgwebdesign.parkCore.objects.Attraction;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,10 @@ public class AttractionManager {
 
     public static void removeAttraction(String name) {
         attractions.remove(name.toLowerCase());
+    }
+
+    public static Collection<Attraction> getAll() {
+        return Collections.unmodifiableCollection(attractions.values());
     }
 
 }
