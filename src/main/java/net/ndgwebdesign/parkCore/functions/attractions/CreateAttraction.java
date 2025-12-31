@@ -1,10 +1,7 @@
 package net.ndgwebdesign.parkCore.functions.attractions;
 
 import net.ndgwebdesign.parkCore.ParkCore;
-import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
-import net.ndgwebdesign.parkCore.managers.AttractionManager;
-import net.ndgwebdesign.parkCore.managers.PendingPanelRequest;
-import net.ndgwebdesign.parkCore.managers.RidePanelConfirmationManager;
+import net.ndgwebdesign.parkCore.managers.*;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.objects.AttractionStatus;
 import org.bukkit.Bukkit;
@@ -51,6 +48,9 @@ public class CreateAttraction {
                 attraction.getStatus(),
                 attraction.getLocation()
         );
+
+        // create warp
+        WarpManager.createWarp(name, player.getLocation());
 
         // Vraag RideOperate panel
         // RideOperate panel vraag

@@ -21,11 +21,6 @@ public class ParkCoreCommand implements CommandExecutor {
             return attractionCommand.handle(sender, args);
         }
 
-        if (args.length >= 1 && args[0].equalsIgnoreCase("genmap")) {
-            return new GenerateMapCommand().execute(sender);
-        }
-
-
         sender.sendMessage("§cOnbekend subcommand.");
         return true;
     }

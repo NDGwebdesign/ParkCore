@@ -1,9 +1,12 @@
 package net.ndgwebdesign.parkCore;
 
+import net.ndgwebdesign.parkCore.api.ApiServer;
 import net.ndgwebdesign.parkCore.commands.ParkCoreCommand;
+import net.ndgwebdesign.parkCore.commands.WarpCommand;
 import net.ndgwebdesign.parkCore.listeners.*;
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
+import net.ndgwebdesign.parkCore.managers.WarpManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.rides.RideOperateHook;
 import org.bukkit.Bukkit;
@@ -19,6 +22,8 @@ public final class ParkCore extends JavaPlugin {
 
     private FileConfiguration menuConfig;
 
+    private ApiServer apiServer;
+
     @Override
     public void onEnable() {
         instance = this;
@@ -33,6 +38,7 @@ public final class ParkCore extends JavaPlugin {
 
 
         AttractionConfigManager.setup();
+        WarpManager.setup();
 
         // Laad alle attracties
         loadAttractions();
@@ -41,6 +47,7 @@ public final class ParkCore extends JavaPlugin {
 
         // Register Commands
         getCommand("parkcore").setExecutor(new ParkCoreCommand());
+        getCommand("warp").setExecutor(new WarpCommand());
 
         //register events
         Bukkit.getPluginManager().registerEvents(new RidePanelChatListener(), this);
@@ -50,12 +57,21 @@ public final class ParkCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AttractionMenuClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new AttractionSignCreateListener(), this);
 
+        // Start API Server
+        apiServer = new ApiServer(this, getConfig().getInt("api.port"));
+        apiServer.start();
+
         Bukkit.getLogger().info("[ParkCore] Successfully enabled!");
     }
 
     @Override
     public void onDisable() {
         Bukkit.getLogger().info("[ParkCore] Disabling ParkCore...");
+
+        // Stop API Server
+        if (apiServer != null) {
+            apiServer.stop();
+        }
 
         Bukkit.getLogger().info("[ParkCore] Successfully disabled!");
     }
@@ -77,7 +93,7 @@ public final class ParkCore extends JavaPlugin {
         getLogger().info(" ");
         getLogger().info(" ParkCore - Themepark Engine");
         getLogger().info(" Version: " + getDescription().getVersion());
-        getLogger().info(" Author: FriendsparkMC, NDGWebDesign");
+        getLogger().info(" Author: FriendsparkMC, NDG-Webdesign");
         getLogger().info(" ");
     }
 
@@ -128,6 +144,7 @@ public final class ParkCore extends JavaPlugin {
     private void loadAllConfigFiles() {
         loadConfigFile("config.yml");
         loadConfigFile("attractions.yml");
+        loadConfigFile("warps.yml");
     }
 
     private void loadConfigFile(String name) {

@@ -1,0 +1,6 @@
+api:
+  port: 8080
+  key: your-api-key-here
+
+map:
+  websocket_port: 9090

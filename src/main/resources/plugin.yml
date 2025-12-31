@@ -6,12 +6,14 @@ authors: [ FriendsparkMC, NDG-webdesign ]
 
 commands:
   parkcore:
-    description: Hoofdcommand van ParkCore
+    description: main command of ParkCore
     usage: /parkcore
     aliases: [pc, park]
+  warp:
+    description: the warp system of ParkCore
 permissions:
     parkcore.admin:
-        description: Toegang tot alle ParkCore admin commando's
+        description: Admin permission for ParkCore
         default: op
     parkcore.reload:
         description: Toegang tot het herladen van de ParkCore configuratie
