@@ -1,22 +1,30 @@
 menu:
-  title: "&6ParkCore Menu"
+  title: "&8Park Menu"
   size: 27
 
   items:
-    attraction:
-      slot: 12
+    attractions:
       material: MINECART
+      slot: 13
       name: "&eAttracties"
       lore:
         - "&7Bekijk alle attracties"
-        - "&7en wachttijden"
       action: ATTRACTION_MENU
 
     audio:
-      slot: 14
-      material: NOTE_BLOCK
-      name: "&bAudio"
+      material: JUKEBOX
+      slot: 15
+      name: "&dAudio"
       lore:
-        - "&7Open Audio instellingen"
+        - "&7Open Audio menu"
       action: COMMAND
-      command: "audio"
+      command: audio
+
+    rank_manager:
+      material: NAME_TAG
+      slot: 22
+      name: "&bRank Manager"
+      lore:
+        - "&7Beheer ranks"
+      permission: parkcore.rank.gui
+      action: RANK_GUI

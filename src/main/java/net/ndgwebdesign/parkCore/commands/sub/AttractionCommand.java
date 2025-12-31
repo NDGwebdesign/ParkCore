@@ -14,6 +14,11 @@ public class AttractionCommand {
 
     public boolean handle(CommandSender sender, String[] args) {
 
+        if (sender.hasPermission("parkcore.attraction") == false) {
+            sender.sendMessage("§cYou don't have permission.");
+            return true;
+        }
+
         if (args.length < 2) {
             sender.sendMessage("§e/parkcore att create <region> <naam>");
             sender.sendMessage("§e/parkcore att delete <naam>  §7(of: /parkcore att delete <region> <naam>)");

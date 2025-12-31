@@ -2,6 +2,7 @@ package net.ndgwebdesign.parkCore.listeners;
 
 import net.ndgwebdesign.parkCore.functions.UI.AttractionMenu;
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
+import net.ndgwebdesign.parkCore.managers.WarpManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -42,7 +43,9 @@ public class AttractionMenuClickListener implements Listener {
                     .getDisplayName()
                     .replace("§e", "");
 
-            player.sendMessage("§eSelected attraction: §6" + attractionName);
+            if (WarpManager.exists(attractionName)) {
+                player.teleport(WarpManager.getWarp(attractionName).getLocation());
+            }
 
         }
     }

@@ -2,6 +2,7 @@ package net.ndgwebdesign.parkCore.functions.attractions;
 
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
+import net.ndgwebdesign.parkCore.managers.WarpManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import org.bukkit.command.CommandSender;
 
@@ -62,6 +63,10 @@ public class DeleteAttraction {
 
         // 🔥 Verwijderen uit memory
         AttractionManager.removeAttraction(name);
+
+        if (WarpManager.exists(name)) {
+            WarpManager.removeWarp(name);
+        }
 
         // 🔥 Verwijderen uit config
         boolean removed = AttractionConfigManager.removeAttraction(region, name);

@@ -82,7 +82,7 @@ public class AttractionMenu {
             meta.setLore(List.of(
                     "§7Status: " + formatStatus(status),
                     "",
-                    "§aLeft-click §7to select this attraction"
+                    "§aLeft-click §7to warp to this attraction."
             ));
 
             item.setItemMeta(meta);

@@ -21,7 +21,7 @@ public class PlayerJoinListener implements Listener {
 
         // Geef alleen als speler er nog geen heeft
         if (!player.getInventory().contains(star)) {
-            player.getInventory().setItem(8, star);
+            player.getInventory().setItem(4, star);
         }
     }
 }

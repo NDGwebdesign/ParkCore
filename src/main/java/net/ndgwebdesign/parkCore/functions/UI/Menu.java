@@ -30,6 +30,12 @@ public class Menu {
             ConfigurationSection item = items.getConfigurationSection(key);
             if (item == null) continue;
 
+            // 🔐 Permission check
+            String permission = item.getString("permission");
+            if (permission != null && !permission.isEmpty()) {
+                if (!player.hasPermission(permission)) continue;
+            }
+
             Material material = Material.valueOf(item.getString("material"));
             int slot = item.getInt("slot");
 

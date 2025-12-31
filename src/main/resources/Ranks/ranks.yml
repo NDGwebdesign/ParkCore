@@ -1,0 +1,18 @@
+ranks:
+  visitor:
+    display_name: "&7Visitor"
+    prefix: "&7[Visitor] "
+    suffix: ""
+    permissions:
+      - parkcore.visitor
+    inheritance: []
+
+  staff:
+    display_name: "&bStaff"
+    prefix: "&b[Staff] "
+    suffix: ""
+    permissions:
+      - parkcore.staff
+      - parkcore.warp.create
+    inheritance:
+      - visitor

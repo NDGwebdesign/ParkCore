@@ -60,6 +60,19 @@ public class MenuClickListener implements Listener {
                     player.closeInventory();
                     player.performCommand(cmd);
                 }
+
+                if ("RANK_GUI".equalsIgnoreCase(action)) {
+
+                    if (!player.hasPermission(item.getString("permission"))) {
+                        player.sendMessage("§cJe hebt geen permissie hiervoor.");
+                        return;
+                    }
+
+                    player.closeInventory();
+                    net.ndgwebdesign.parkCore.functions.UI.PlayerSelectMenu.open(player);
+                    return;
+                }
+
                 return;
             }
         }
