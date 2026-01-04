@@ -9,8 +9,9 @@ import org.bukkit.command.CommandSender;
 public class ParkCoreCommand implements CommandExecutor {
 
     private final AttractionCommand attractionCommand = new AttractionCommand();
-
     private final RankCommand rankCommand = new RankCommand();
+
+
 
 
     @Override
@@ -18,6 +19,10 @@ public class ParkCoreCommand implements CommandExecutor {
 
         if (args.length == 0) {
             sender.sendMessage("§e/parkcore att create <region> <naam>");
+
+            sender.sendMessage("§e/parkcore rank create <naam>");
+            sender.sendMessage("§e/parkcore rank delete <naam>");
+
             return true;
         }
 
@@ -28,7 +33,6 @@ public class ParkCoreCommand implements CommandExecutor {
         if (args[0].equalsIgnoreCase("rank")) {
             return rankCommand.handle(sender, args);
         }
-
 
         sender.sendMessage("§cOnbekend subcommand.");
         return true;

@@ -20,11 +20,11 @@ menu:
       action: COMMAND
       command: audio
 
-    rank_manager:
+    admin_manager:
       material: NAME_TAG
       slot: 22
       name: "&bRank Manager"
       lore:
         - "&7Beheer ranks"
-      permission: parkcore.rank.gui
-      action: RANK_GUI
+      permission: parkcore.admin.gui
+      action: ADMIN_GUI

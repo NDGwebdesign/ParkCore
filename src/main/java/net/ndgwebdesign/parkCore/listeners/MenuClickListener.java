@@ -1,6 +1,7 @@
 package net.ndgwebdesign.parkCore.listeners;
 
 import net.ndgwebdesign.parkCore.ParkCore;
+import net.ndgwebdesign.parkCore.functions.UI.AdminMenu;
 import net.ndgwebdesign.parkCore.functions.UI.AttractionMenu;
 import net.ndgwebdesign.parkCore.functions.UI.Menu;
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
@@ -61,7 +62,7 @@ public class MenuClickListener implements Listener {
                     player.performCommand(cmd);
                 }
 
-                if ("RANK_GUI".equalsIgnoreCase(action)) {
+                if ("ADMIN_GUI".equalsIgnoreCase(action)) {
 
                     if (!player.hasPermission(item.getString("permission"))) {
                         player.sendMessage("§cJe hebt geen permissie hiervoor.");
@@ -69,7 +70,7 @@ public class MenuClickListener implements Listener {
                     }
 
                     player.closeInventory();
-                    net.ndgwebdesign.parkCore.functions.UI.PlayerSelectMenu.open(player);
+                    AdminMenu.open(player);
                     return;
                 }
 

@@ -46,6 +46,7 @@ public class RankMenu {
             }
 
             lore.add("§aKlik om deze rank te zetten");
+            lore.add("§eRechtsklik: Permissions");
 
             meta.setLore(lore);
             item.setItemMeta(meta);

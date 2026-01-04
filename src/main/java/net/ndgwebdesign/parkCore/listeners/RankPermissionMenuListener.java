@@ -1,0 +1,63 @@
+package net.ndgwebdesign.parkCore.listeners;
+
+import net.ndgwebdesign.parkCore.functions.UI.RankPermissionMenu;
+import net.ndgwebdesign.parkCore.managers.RankManager;
+import net.ndgwebdesign.parkCore.objects.Rank;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+
+public class RankPermissionMenuListener implements Listener {
+
+    @EventHandler
+    public void onClick(InventoryClickEvent event) {
+
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        if (!event.getView().getTitle().startsWith("§8Permissions:")) return;
+
+        event.setCancelled(true);
+
+        ItemStack item = event.getCurrentItem();
+        if (item == null || !item.hasItemMeta()) return;
+
+        String title = event.getView().getTitle();
+        String rankName = title.split("§e")[1].split(" ")[0];
+        Rank rank = RankManager.getRank(rankName);
+        if (rank == null) return;
+
+        String display = item.getItemMeta().getDisplayName();
+
+        // Pagina navigatie
+        if (display.contains("Vorige")) {
+            RankPermissionMenu.open(player, rank, getPage(title) - 1);
+            return;
+        }
+
+        if (display.contains("Volgende")) {
+            RankPermissionMenu.open(player, rank, getPage(title) + 1);
+            return;
+        }
+
+        // ✅ PERMISSION CORRECT UIT GUI HALEN
+        String clean = ChatColor.stripColor(display);
+        String perm = clean.substring(2).trim(); // verwijder ✔/✖
+
+        if (rank.getPermissions().contains(perm)) {
+            RankManager.removePermission(rank.getName(), perm);
+            player.sendMessage("§cPermission §e" + perm + " §cis verwijderd");
+        } else {
+            RankManager.addPermission(rank.getName(), perm);
+            player.sendMessage("§aPermission §e" + perm + " §ais toegevoegd");
+        }
+
+        RankPermissionMenu.open(player, rank, getPage(title));
+    }
+
+    private int getPage(String title) {
+        String pagePart = title.substring(title.lastIndexOf("(") + 1, title.lastIndexOf(")"));
+        return Integer.parseInt(pagePart.split("/")[0]) - 1;
+    }
+}

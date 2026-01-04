@@ -12,6 +12,7 @@ permissions:
         parkcore.warp.create: true
         parkcore.warp.delete: true
         parkcore.rank.gui: true
+        parkcore.admin.gui: true
 
   parkcore.visitor:
     description: Visitor permission for ParkCore
@@ -34,6 +35,14 @@ permissions:
 
   parkcore.rank.gui:
     description: Toegang tot Rank GUI
+    default: op
+
+  parkcore.rank.create:
+    description: Rank aanmaken
+    default: op
+
+  parkcore.admin.gui:
+    description: Toegang tot Admin GUI
     default: op
 
 commands:

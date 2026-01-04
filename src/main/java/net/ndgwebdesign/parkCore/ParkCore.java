@@ -63,6 +63,9 @@ public final class ParkCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerJoinRankListener(), this);
         Bukkit.getPluginManager().registerEvents(new RankMenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerSelectMenuListener(), this);
+        Bukkit.getPluginManager().registerEvents(new AdminMenuListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RankPermissionSelectListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RankPermissionMenuListener(), this);
 
 
         // Start API Server
