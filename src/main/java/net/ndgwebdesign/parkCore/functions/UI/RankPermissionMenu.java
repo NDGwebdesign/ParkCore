@@ -55,9 +55,9 @@ public class RankPermissionMenu {
 
             meta.setDisplayName((has ? "§a✔ " : "§c✖ ") + perm);
             meta.setLore(List.of(
-                    "§7Status: " + (has ? "§aAAN" : "§cUIT"),
+                    "§7Status: " + (has ? "§aON" : "§cOFF"),
                     "",
-                    "§eKlik om deze permission te togglen"
+                    "§eClick to toggle permission"
             ));
 
             item.setItemMeta(meta);
