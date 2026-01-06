@@ -2,52 +2,69 @@ package net.ndgwebdesign.parkCore.functions.UI;
 
 import net.ndgwebdesign.parkCore.managers.RankManager;
 import net.ndgwebdesign.parkCore.objects.Rank;
+import net.ndgwebdesign.parkCore.utils.PermissionSearchSession;
 import net.ndgwebdesign.parkCore.utils.PermissionUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class RankPermissionMenu {
 
-    public static final int ITEMS_PER_PAGE = 45;
-    public static final int INVENTORY_SIZE = 54;
+    private static final int ITEMS_PER_PAGE = 45;
 
-    public static void open(Player staff, Rank rank, int page) {
+    /* ===================== */
+    /* OPEN METHODS          */
+    /* ===================== */
 
-        if (rank == null) {
-            staff.sendMessage("§cDeze rank bestaat niet.");
-            return;
-        }
+    public static void open(Player p, Rank rank, int page) {
+        openInternal(p, rank, PermissionUtil.getAllPermissions(), page, null);
+    }
 
-        List<String> permissions = PermissionUtil.getAllPermissions();
-        if (permissions.isEmpty()) {
-            staff.sendMessage("§cGeen permissions gevonden.");
-            return;
-        }
+    public static void openFiltered(Player p, Rank rank, String plugin, int page) {
 
-        int maxPage = (int) Math.ceil((double) permissions.size() / ITEMS_PER_PAGE);
+        List<String> filtered = PermissionUtil.getAllPermissions().stream()
+                .filter(perm -> PermissionUtil.getPluginFromPermission(perm).equals(plugin))
+                .collect(Collectors.toList());
+
+        openInternal(p, rank, filtered, page, "Plugin: " + plugin);
+    }
+
+    public static void openSearch(Player p, Rank rank, String query, int page) {
+
+        List<String> filtered = PermissionUtil.getAllPermissions().stream()
+                .filter(perm -> perm.toLowerCase().contains(query))
+                .collect(Collectors.toList());
+
+        openInternal(p, rank, filtered, page, "Zoek: " + query);
+    }
+
+    /* ===================== */
+    /* CORE GUI              */
+    /* ===================== */
+
+    private static void openInternal(Player p, Rank rank, List<String> perms, int page, String footer) {
+
+        int maxPage = Math.max(1, (int) Math.ceil((double) perms.size() / ITEMS_PER_PAGE));
         page = Math.max(0, Math.min(page, maxPage - 1));
 
         Inventory inv = Bukkit.createInventory(
                 null,
-                INVENTORY_SIZE,
+                54,
                 "§8Permissions: §e" + rank.getName() + " §7(" + (page + 1) + "/" + maxPage + ")"
         );
 
         int start = page * ITEMS_PER_PAGE;
-        int end = Math.min(start + ITEMS_PER_PAGE, permissions.size());
+        int end = Math.min(start + ITEMS_PER_PAGE, perms.size());
 
         int slot = 0;
 
-        // Voeg permissions toe
         for (int i = start; i < end; i++) {
 
-            String perm = permissions.get(i).trim(); // verwijder ongewenste spaties
+            String perm = perms.get(i);
             boolean has = rank.getPermissions().contains(perm);
 
             ItemStack item = new ItemStack(has ? Material.LIME_DYE : Material.RED_DYE);
@@ -55,22 +72,22 @@ public class RankPermissionMenu {
 
             meta.setDisplayName((has ? "§a✔ " : "§c✖ ") + perm);
             meta.setLore(List.of(
-                    "§7Status: " + (has ? "§aON" : "§cOFF"),
+                    "§7Status: " + (has ? "§aAAN" : "§cUIT"),
                     "",
-                    "§eClick to toggle permission"
+                    "§eKlik om te togglen"
             ));
 
             item.setItemMeta(meta);
             inv.setItem(slot++, item);
         }
 
-        // Paginaknoppen
-        if (page > 0) inv.setItem(45, button(Material.ARROW, "§eVorige pagina"));
-        if (page + 1 < maxPage) inv.setItem(53, button(Material.ARROW, "§eVolgende pagina"));
+        inv.setItem(48, button(Material.COMPASS, "§eZoeken"));
+        inv.setItem(50, button(Material.CHEST, "§eFilter per plugin"));
 
-        fillBottom(inv);
+        if (page > 0) inv.setItem(45, button(Material.ARROW, "§eVorige"));
+        if (page + 1 < maxPage) inv.setItem(53, button(Material.ARROW, "§eVolgende"));
 
-        staff.openInventory(inv);
+        p.openInventory(inv);
     }
 
     private static ItemStack button(Material mat, String name) {
@@ -79,18 +96,5 @@ public class RankPermissionMenu {
         meta.setDisplayName(name);
         item.setItemMeta(meta);
         return item;
-    }
-
-    private static void fillBottom(Inventory inv) {
-        ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
-        ItemMeta meta = filler.getItemMeta();
-        meta.setDisplayName(" ");
-        filler.setItemMeta(meta);
-
-        for (int i = 46; i < 54; i++) {
-            if (inv.getItem(i) == null) {
-                inv.setItem(i, filler);
-            }
-        }
     }
 }

@@ -12,13 +12,26 @@ permissions:
         parkcore.warp.create: true
         parkcore.warp.delete: true
         parkcore.rank.gui: true
+        parkcore.rank.create: true
+        parkcore.rank.delete: true
+        parkcore.rank.permission: true
         parkcore.admin.gui: true
+        parkcore.gamemode: true
 
   parkcore.visitor:
     description: Visitor permission for ParkCore
     default: true
     children:
       parkcore.warp.use: true
+
+  parkcore.gamemode:
+    description: Gamemode permission for ParkCore
+    default: op
+    children:
+      parkcore.gm.gms: true
+      parkcore.gm.gmc: true
+      parkcore.gm.gma: true
+      parkcore.gm.gmsp: true
 
 #  normal permissions
   parkcore.warp.use:
@@ -41,9 +54,35 @@ permissions:
     description: Rank aanmaken
     default: op
 
+  parkcore.rank.delete:
+    description: Rank verwijderen
+    default: op
+
+  parkcore.rank.permission:
+    description: Rank permissies beheren
+    default: op
+
   parkcore.admin.gui:
     description: Toegang tot Admin GUI
     default: op
+
+#  gamemode permissions
+  parkcore.gm.gms:
+    description: Permission to use /gms
+    default: op
+
+  parkcore.gm.gmc:
+    description: Permission to use /gmc
+    default: op
+
+  parkcore.gm.gma:
+    description: Permission to use /gma
+    default: op
+
+  parkcore.gm.gmsp:
+    description: Permission to use /gmsp
+    default: op
+
 
 commands:
   parkcore:
@@ -52,3 +91,21 @@ commands:
     aliases: [pc, park]
   warp:
     description: the warp system of ParkCore
+    usage: /warp
+
+  gms:
+    description: Set your gamemode to survival
+    usage: /gms
+    permission: parkcore.gm.gms
+  gmc:
+    description: Set your gamemode to creative
+    usage: /gmc
+    permission: parkcore.gm.gmc
+  gma:
+    description: Set your gamemode to adventure
+    usage: /gma
+    permission: parkcore.gm.gma
+  gmsp:
+    description: Set your gamemode to spectator
+    usage: /gmsp
+    permission: parkcore.gm.gmsp

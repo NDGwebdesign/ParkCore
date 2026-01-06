@@ -2,6 +2,7 @@ package net.ndgwebdesign.parkCore.managers;
 
 import net.ndgwebdesign.parkCore.ParkCore;
 import net.ndgwebdesign.parkCore.objects.Rank;
+import net.ndgwebdesign.parkCore.utils.PermissionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -122,6 +123,8 @@ public class RankManager {
     public static void addPermission(String rankName, String permission) {
         Rank rank = getRank(rankName);
         if (rank == null) return;
+        if (!PermissionUtil.isValidPermission(permission)) return;
+
 
         permission = permission.trim().replace("§", ""); // ✅ altijd schoon
 
@@ -208,14 +211,10 @@ public class RankManager {
 
         List<String> cleanedPerms = new ArrayList<>();
         for (String perm : rank.getPermissions()) {
-            if (perm == null) continue;
-
-            String clean = ChatColor.stripColor(perm).trim();
-            if (!clean.isEmpty()) {
-                cleanedPerms.add(clean);
+            if (PermissionUtil.isValidPermission(perm)) {
+                cleanedPerms.add(perm);
             }
         }
-
         ranksConfig.set(path + ".permissions", cleanedPerms);
         ranksConfig.set(path + ".inheritance", rank.getInheritance());
 

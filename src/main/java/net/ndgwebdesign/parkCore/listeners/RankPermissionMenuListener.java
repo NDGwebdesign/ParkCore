@@ -3,6 +3,7 @@ package net.ndgwebdesign.parkCore.listeners;
 import net.ndgwebdesign.parkCore.functions.UI.RankPermissionMenu;
 import net.ndgwebdesign.parkCore.managers.RankManager;
 import net.ndgwebdesign.parkCore.objects.Rank;
+import net.ndgwebdesign.parkCore.utils.PermissionUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,7 +44,15 @@ public class RankPermissionMenuListener implements Listener {
 
         // ✅ PERMISSION CORRECT UIT GUI HALEN
         String clean = ChatColor.stripColor(display);
-        String perm = clean.substring(2).trim(); // verwijder ✔/✖
+        String perm = display.replace("§a ", "")
+                .replace("§c ", "")
+                .trim();
+
+        if (!PermissionUtil.isValidPermission(perm)) {
+            // Klik was op zoek/filter/knop → negeren
+            return;
+        }
+
 
         if (rank.getPermissions().contains(perm)) {
             RankManager.removePermission(rank.getName(), perm);

@@ -1,8 +1,10 @@
 package net.ndgwebdesign.parkCore;
 
 import net.ndgwebdesign.parkCore.api.ApiServer;
+import net.ndgwebdesign.parkCore.commands.GamemodeCommand;
 import net.ndgwebdesign.parkCore.commands.ParkCoreCommand;
 import net.ndgwebdesign.parkCore.commands.WarpCommand;
+import net.ndgwebdesign.parkCore.commands.tab.RankTabCompleter;
 import net.ndgwebdesign.parkCore.listeners.*;
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
@@ -51,6 +53,11 @@ public final class ParkCore extends JavaPlugin {
         getCommand("parkcore").setExecutor(new ParkCoreCommand());
         getCommand("warp").setExecutor(new WarpCommand());
 
+        getCommand("gmc").setExecutor(new GamemodeCommand());
+        getCommand("gms").setExecutor(new GamemodeCommand());
+        getCommand("gma").setExecutor(new GamemodeCommand());
+        getCommand("gmsp").setExecutor(new GamemodeCommand());
+
         //register events
         Bukkit.getPluginManager().registerEvents(new RidePanelChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
@@ -66,7 +73,11 @@ public final class ParkCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AdminMenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new RankPermissionSelectListener(), this);
         Bukkit.getPluginManager().registerEvents(new RankPermissionMenuListener(), this);
+        getServer().getPluginManager().registerEvents(new PluginFilterMenuListener(), this);
+        getServer().getPluginManager().registerEvents(new PermissionSearchListener(), this);
 
+        //tab complete
+        getCommand("parkcore").setTabCompleter(new RankTabCompleter());
 
         // Start API Server
         apiServer = new ApiServer(this, getConfig().getInt("api.port"));

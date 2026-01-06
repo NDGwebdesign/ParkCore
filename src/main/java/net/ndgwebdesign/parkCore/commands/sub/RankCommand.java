@@ -22,8 +22,55 @@ public class RankCommand {
             case "set"    -> handleSet(sender, args);
             case "info"   -> handleInfo(sender, args);
             case "gui"    -> handleGui(sender, args);
+            case "perm"   -> handlePermission(sender, args);
             default       -> { sendHelp(sender); yield true; }
         };
+    }
+
+    /* ===================== */
+    /* PERMISSIONS           */
+    /* ===================== */
+
+    private boolean handlePermission(CommandSender sender, String[] args) {
+
+        if (!sender.hasPermission("parkcore.rank.permission")) {
+            sender.sendMessage("§cJe hebt geen permissie.");
+            return true;
+        }
+
+        if (args.length < 5) {
+            sender.sendMessage("§eGebruik:");
+            sender.sendMessage("§e/parkcore rank perm add <rank> <permission>");
+            sender.sendMessage("§e/parkcore rank perm remove <rank> <permission>");
+            return true;
+        }
+
+        String action = args[2].toLowerCase();
+        String rankName = args[3].toLowerCase();
+        String permission = args[4].trim().replace("§", "");
+
+        Rank rank = RankManager.getRank(rankName);
+        if (rank == null) {
+            sender.sendMessage("§cDeze rank bestaat niet.");
+            return true;
+        }
+
+        switch (action) {
+
+            case "add" -> {
+                RankManager.addPermission(rankName, permission);
+                sender.sendMessage("§aPermission §e" + permission + " §ais toegevoegd aan §e" + rankName);
+            }
+
+            case "remove" -> {
+                RankManager.removePermission(rankName, permission);
+                sender.sendMessage("§cPermission §e" + permission + " §cis verwijderd van §e" + rankName);
+            }
+
+            default -> sender.sendMessage("§cGebruik add of remove.");
+        }
+
+        return true;
     }
 
     /* ===================== */
@@ -186,6 +233,8 @@ public class RankCommand {
         sender.sendMessage("§e/parkcore rank create <naam>");
         sender.sendMessage("§e/parkcore rank delete <naam>");
         sender.sendMessage("§e/parkcore rank set <player> <rank>");
+        sender.sendMessage("§e/parkcore rank perm add <rank> <permission>");
+        sender.sendMessage("§e/parkcore rank perm remove <rank> <permission>");
         sender.sendMessage("§e/parkcore rank info <player>");
         sender.sendMessage("§e/parkcore rank gui <player>");
     }
