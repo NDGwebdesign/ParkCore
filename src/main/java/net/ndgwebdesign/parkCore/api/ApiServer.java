@@ -6,6 +6,7 @@ import net.ndgwebdesign.parkCore.managers.AttractionManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.objects.AttractionStatus;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -20,6 +21,9 @@ public class ApiServer {
     private final ParkCore plugin;
     private boolean running = false;
     private final Gson gson = new Gson();
+
+    private static File file;
+    private static FileConfiguration config;
 
     public ApiServer(ParkCore plugin, int port) {
         this.plugin = plugin;
@@ -100,10 +104,8 @@ public class ApiServer {
                 switch (command) {
 
                     case "PING" -> out.println("OK PONG");
-                    case "GET_ATTRACTION" ->
+                    case "GET_ATTRACTIONS" ->
                             handleGetAttraction(out, args);
-                    case "SET_STATUS" ->
-                            handleSetStatus(out, args);
                     default ->
                             out.println("ERROR Unknown command");
 
@@ -126,55 +128,7 @@ public class ApiServer {
 
     private void handleGetAttraction(PrintWriter out, String[] args) {
 
-        if (args.length < 2) {
-            out.println("ERROR Usage: GET_ATTRACTION <name>");
-            return;
-        }
-
-        String name = args[1];
-
-        Attraction attraction = AttractionManager.getAttraction(name);
-        if (attraction == null) {
-            out.println("ERROR Attraction not found");
-            return;
-        }
-
-        out.println("OK "
-                + "name=" + attraction.getName()
-                + ";region=" + attraction.getRegion()
-                + ";status=" + attraction.getStatus().name()
-        );
+       file = new File(ParkCore.getInstance().getDataFolder(), "attractions.yml");
     }
 
-    private void handleSetStatus(PrintWriter out, String[] args) {
-
-        if (args.length < 3) {
-            out.println("ERROR Usage: SET_STATUS <name> <OPEN|CLOSED|MAINTENANCE>");
-            return;
-        }
-
-        String name = args[1];
-        String statusArg = args[2].toUpperCase();
-
-        Attraction attraction = AttractionManager.getAttraction(name);
-        if (attraction == null) {
-            out.println("ERROR Attraction not found");
-            return;
-        }
-
-        AttractionStatus status;
-        try {
-            status = AttractionStatus.valueOf(statusArg);
-        } catch (IllegalArgumentException e) {
-            out.println("ERROR Invalid status");
-            return;
-        }
-
-        // Bukkit-thread veilig uitvoeren
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            attraction.setStatus(status);
-        });
-
-        out.println("OK Status updated");
-    }
 }
