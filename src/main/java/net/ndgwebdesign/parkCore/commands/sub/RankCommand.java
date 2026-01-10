@@ -19,27 +19,30 @@ public class RankCommand {
         return switch (args[1].toLowerCase()) {
             case "create" -> handleCreate(sender, args);
             case "delete" -> handleDelete(sender, args);
-            case "set"    -> handleSet(sender, args);
-            case "info"   -> handleInfo(sender, args);
-            case "gui"    -> handleGui(sender, args);
-            case "perm"   -> handlePermission(sender, args);
-            default       -> { sendHelp(sender); yield true; }
+            case "set" -> handleSet(sender, args);
+            case "info" -> handleInfo(sender, args);
+            case "gui" -> handleGui(sender, args);
+            case "perm" -> handlePermission(sender, args);
+            default -> {
+                sendHelp(sender);
+                yield true;
+            }
         };
     }
 
     /* ===================== */
-    /* PERMISSIONS           */
+    /* PERMISSIONS */
     /* ===================== */
 
     private boolean handlePermission(CommandSender sender, String[] args) {
 
         if (!sender.hasPermission("parkcore.rank.permission")) {
-            sender.sendMessage("§cJe hebt geen permissie.");
+            sender.sendMessage("§cYou do not have permission.");
             return true;
         }
 
         if (args.length < 5) {
-            sender.sendMessage("§eGebruik:");
+            sender.sendMessage("§eUsage:");
             sender.sendMessage("§e/parkcore rank perm add <rank> <permission>");
             sender.sendMessage("§e/parkcore rank perm remove <rank> <permission>");
             return true;
@@ -51,7 +54,7 @@ public class RankCommand {
 
         Rank rank = RankManager.getRank(rankName);
         if (rank == null) {
-            sender.sendMessage("§cDeze rank bestaat niet.");
+            sender.sendMessage("§cThis rank does not exist.");
             return true;
         }
 
@@ -59,133 +62,133 @@ public class RankCommand {
 
             case "add" -> {
                 RankManager.addPermission(rankName, permission);
-                sender.sendMessage("§aPermission §e" + permission + " §ais toegevoegd aan §e" + rankName);
+                sender.sendMessage("§aPermission §e" + permission + " §ahas been added to §e" + rankName);
             }
 
             case "remove" -> {
                 RankManager.removePermission(rankName, permission);
-                sender.sendMessage("§cPermission §e" + permission + " §cis verwijderd van §e" + rankName);
+                sender.sendMessage("§cPermission §e" + permission + " §chas been removed from §e" + rankName);
             }
 
-            default -> sender.sendMessage("§cGebruik add of remove.");
+            default -> sender.sendMessage("§cUse add or remove.");
         }
 
         return true;
     }
 
     /* ===================== */
-    /* CREATE                */
+    /* CREATE */
     /* ===================== */
 
     private boolean handleCreate(CommandSender sender, String[] args) {
 
         if (!sender.hasPermission("parkcore.rank.create")) {
-            sender.sendMessage("§cJe hebt geen permissie.");
+            sender.sendMessage("§cYou do not have permission.");
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("§eGebruik: /parkcore rank create <naam>");
+            sender.sendMessage("§eUsage: /parkcore rank create <name>");
             return true;
         }
 
         String name = args[2].toLowerCase();
 
         if (RankManager.getRank(name) != null) {
-            sender.sendMessage("§cRank §e" + name + " §cbestaat al.");
+            sender.sendMessage("§cRank §e" + name + " §calready exists.");
             return true;
         }
 
         RankManager.createRank(name);
-        sender.sendMessage("§aRank §e" + name + " §ais aangemaakt!");
+        sender.sendMessage("§aRank §e" + name + " §ahas been created!");
         return true;
     }
 
     /* ===================== */
-    /* DELETE                */
+    /* DELETE */
     /* ===================== */
 
     private boolean handleDelete(CommandSender sender, String[] args) {
 
         if (!sender.hasPermission("parkcore.rank.delete")) {
-            sender.sendMessage("§cJe hebt geen permissie.");
+            sender.sendMessage("§cYou do not have permission.");
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("§eGebruik: /parkcore rank delete <naam>");
+            sender.sendMessage("§eUsage: /parkcore rank delete <name>");
             return true;
         }
 
         String name = args[2].toLowerCase();
 
         if (name.equals("visitor")) {
-            sender.sendMessage("§cDe basisrank §evisitor §ckan niet worden verwijderd.");
+            sender.sendMessage("§cThe base rank §evisitor §ccan not be deleted.");
             return true;
         }
 
         if (RankManager.getRank(name) == null) {
-            sender.sendMessage("§cRank §e" + name + " §cbestaat niet.");
+            sender.sendMessage("§cRank §e" + name + " §cdoes not exist.");
             return true;
         }
 
         RankManager.deleteRank(name);
-        sender.sendMessage("§aRank §e" + name + " §ais verwijderd!");
+        sender.sendMessage("§aRank §e" + name + " §ahas been removed!");
         return true;
     }
 
     /* ===================== */
-    /* SET                   */
+    /* SET */
     /* ===================== */
 
     private boolean handleSet(CommandSender sender, String[] args) {
 
         if (!sender.hasPermission("parkcore.rank.set")) {
-            sender.sendMessage("§cJe hebt geen permissie.");
+            sender.sendMessage("§cYou do not have permission.");
             return true;
         }
 
         if (args.length < 4) {
-            sender.sendMessage("§eGebruik: /parkcore rank set <player> <rank>");
+            sender.sendMessage("§eUsage: /parkcore rank set <player> <rank>");
             return true;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            sender.sendMessage("§cSpeler niet online.");
+            sender.sendMessage("§cPlayer not online.");
             return true;
         }
 
         Rank rank = RankManager.getRank(args[3]);
         if (rank == null) {
-            sender.sendMessage("§cDeze rank bestaat niet.");
+            sender.sendMessage("§cThis rank does not exist.");
             return true;
         }
 
         RankManager.setPlayerRank(target.getName(), rank.getName());
         RankManager.applyRank(target);
 
-        sender.sendMessage("§aRank van §e" + target.getName()
-                + " §ais nu " + rank.getDisplayName());
+        sender.sendMessage("§aRank of §e" + target.getName()
+                + " §ais now " + rank.getDisplayName());
 
-        target.sendMessage("§aJe rank is veranderd naar " + rank.getDisplayName());
+        target.sendMessage("§aYour rank has been changed to " + rank.getDisplayName());
         return true;
     }
 
     /* ===================== */
-    /* INFO                  */
+    /* INFO */
     /* ===================== */
 
     private boolean handleInfo(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage("§eGebruik: /parkcore rank info <player>");
+            sender.sendMessage("§eUsage: /parkcore rank info <player>");
             return true;
         }
 
         Player target = Bukkit.getPlayerExact(args[2]);
         if (target == null) {
-            sender.sendMessage("§cSpeler niet online.");
+            sender.sendMessage("§cPlayer not online.");
             return true;
         }
 
@@ -204,18 +207,18 @@ public class RankCommand {
     }
 
     /* ===================== */
-    /* GUI                   */
+    /* GUI */
     /* ===================== */
 
     private boolean handleGui(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player staff)) {
-            sender.sendMessage("§cAlleen spelers kunnen dit gebruiken.");
+            sender.sendMessage("§cOnly players can use this.");
             return true;
         }
 
         if (args.length < 3) {
-            sender.sendMessage("§eGebruik: /parkcore rank gui <player>");
+            sender.sendMessage("§eUsage: /parkcore rank gui <player>");
             return true;
         }
 
@@ -230,8 +233,8 @@ public class RankCommand {
     }
 
     private void sendHelp(CommandSender sender) {
-        sender.sendMessage("§e/parkcore rank create <naam>");
-        sender.sendMessage("§e/parkcore rank delete <naam>");
+        sender.sendMessage("§e/parkcore rank create <name>");
+        sender.sendMessage("§e/parkcore rank delete <name>");
         sender.sendMessage("§e/parkcore rank set <player> <rank>");
         sender.sendMessage("§e/parkcore rank perm add <rank> <permission>");
         sender.sendMessage("§e/parkcore rank perm remove <rank> <permission>");

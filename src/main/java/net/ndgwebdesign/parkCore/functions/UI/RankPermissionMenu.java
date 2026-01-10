@@ -17,7 +17,7 @@ public class RankPermissionMenu {
     private static final int ITEMS_PER_PAGE = 45;
 
     /* ===================== */
-    /* OPEN METHODS          */
+    /* OPEN METHODS */
     /* ===================== */
 
     public static void open(Player p, Rank rank, int page) {
@@ -39,11 +39,11 @@ public class RankPermissionMenu {
                 .filter(perm -> perm.toLowerCase().contains(query))
                 .collect(Collectors.toList());
 
-        openInternal(p, rank, filtered, page, "Zoek: " + query);
+        openInternal(p, rank, filtered, page, "Search: " + query);
     }
 
     /* ===================== */
-    /* CORE GUI              */
+    /* CORE GUI */
     /* ===================== */
 
     private static void openInternal(Player p, Rank rank, List<String> perms, int page, String footer) {
@@ -54,8 +54,7 @@ public class RankPermissionMenu {
         Inventory inv = Bukkit.createInventory(
                 null,
                 54,
-                "§8Permissions: §e" + rank.getName() + " §7(" + (page + 1) + "/" + maxPage + ")"
-        );
+                "§8Permissions: §e" + rank.getName() + " §7(" + (page + 1) + "/" + maxPage + ")");
 
         int start = page * ITEMS_PER_PAGE;
         int end = Math.min(start + ITEMS_PER_PAGE, perms.size());
@@ -72,20 +71,21 @@ public class RankPermissionMenu {
 
             meta.setDisplayName((has ? "§a✔ " : "§c✖ ") + perm);
             meta.setLore(List.of(
-                    "§7Status: " + (has ? "§aAAN" : "§cUIT"),
+                    "§7Status: " + (has ? "§aON" : "§cOFF"),
                     "",
-                    "§eKlik om te togglen"
-            ));
+                    "§eClick to toggle"));
 
             item.setItemMeta(meta);
             inv.setItem(slot++, item);
         }
 
-        inv.setItem(48, button(Material.COMPASS, "§eZoeken"));
-        inv.setItem(50, button(Material.CHEST, "§eFilter per plugin"));
+        inv.setItem(48, button(Material.COMPASS, "§eSearch"));
+        inv.setItem(50, button(Material.CHEST, "§eFilter by plugin"));
 
-        if (page > 0) inv.setItem(45, button(Material.ARROW, "§eVorige"));
-        if (page + 1 < maxPage) inv.setItem(53, button(Material.ARROW, "§eVolgende"));
+        if (page > 0)
+            inv.setItem(45, button(Material.ARROW, "§ePrevious"));
+        if (page + 1 < maxPage)
+            inv.setItem(53, button(Material.ARROW, "§eNext"));
 
         p.openInventory(inv);
     }

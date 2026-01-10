@@ -23,11 +23,10 @@ public class AttractionMenu {
         Inventory inv = Bukkit.createInventory(
                 null,
                 SIZE,
-                "§6Attractions §8- §e" + selectedRegion
-        );
+                "§6Attractions §8- §e" + selectedRegion);
 
         /* ---------------------- */
-        /* Regions bovenin        */
+        /* Regions bovenin */
         /* ---------------------- */
         int slot = 0;
         for (String region : AttractionConfigManager
@@ -38,26 +37,24 @@ public class AttractionMenu {
             ItemStack item = new ItemStack(
                     region.equalsIgnoreCase(selectedRegion)
                             ? Material.GOLD_BLOCK
-                            : Material.NAME_TAG
-            );
+                            : Material.NAME_TAG);
 
             ItemMeta meta = item.getItemMeta();
             meta.setDisplayName("§e" + region);
             meta.setLore(List.of(
                     "§7Click to open",
-                    "§7The region"
-            ));
+                    "§7The region"));
             item.setItemMeta(meta);
 
             inv.setItem(slot++, item);
-            if (slot >= 9) break;
+            if (slot >= 9)
+                break;
         }
 
         /* ---------------------- */
-        /* Attracties             */
+        /* Attractions */
         /* ---------------------- */
-        List<String> attractions =
-                AttractionConfigManager.getAttractions(selectedRegion);
+        List<String> attractions = AttractionConfigManager.getAttractions(selectedRegion);
 
         int attractionSlot = 9;
 
@@ -82,13 +79,13 @@ public class AttractionMenu {
             meta.setLore(List.of(
                     "§7Status: " + formatStatus(status),
                     "",
-                    "§aLeft-click §7to warp to this attraction."
-            ));
+                    "§aLeft-click §7to warp to this attraction."));
 
             item.setItemMeta(meta);
             inv.setItem(attractionSlot++, item);
 
-            if (attractionSlot >= 45) break;
+            if (attractionSlot >= 45)
+                break;
         }
 
         player.openInventory(inv);

@@ -18,15 +18,16 @@ public class RideOperateHook {
     }
 
     /**
-     * Laat de speler het RideOperate command uitvoeren
+     * Make the player execute the RideOperate command
      */
     public void createPanel(Player player, String attractionName) {
 
-        if (player == null || !player.isOnline()) return;
+        if (player == null || !player.isOnline())
+            return;
 
         String command = "createpanel " + attractionName;
 
-        // Command uitvoeren alsof de speler het typt
+        // Execute command as if the player typed it
         Bukkit.dispatchCommand(player, command);
     }
 }

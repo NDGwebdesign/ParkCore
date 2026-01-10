@@ -13,13 +13,17 @@ public class AttractionMenuClickListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
 
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!event.getView().getTitle().startsWith("§6Attractions")) return;
+        if (!(event.getWhoClicked() instanceof Player player))
+            return;
+        if (!event.getView().getTitle().startsWith("§6Attractions"))
+            return;
 
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null) return;
-        if (event.getCurrentItem().getItemMeta() == null) return;
+        if (event.getCurrentItem() == null)
+            return;
+        if (event.getCurrentItem().getItemMeta() == null)
+            return;
 
         int slot = event.getSlot();
 
@@ -36,7 +40,7 @@ public class AttractionMenuClickListener implements Listener {
             return;
         }
 
-        // Attractie klikken
+        // Attraction click
         if (slot >= 9 && slot <= 44) {
             String attractionName = event.getCurrentItem()
                     .getItemMeta()

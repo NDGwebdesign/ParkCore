@@ -11,9 +11,9 @@ public class DeleteAttraction {
     public boolean execute(CommandSender sender, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage("§eGebruik:");
-            sender.sendMessage("§e/parkcore att delete <naam>");
-            sender.sendMessage("§e/parkcore att delete <region> <naam>");
+            sender.sendMessage("§eUsage:");
+            sender.sendMessage("§e/parkcore att delete <name>");
+            sender.sendMessage("§e/parkcore att delete <region> <name>");
             return true;
         }
 
@@ -26,20 +26,19 @@ public class DeleteAttraction {
             name = args[3];
 
             if (!AttractionConfigManager.regionExists(region)) {
-                sender.sendMessage("§cRegion §e" + region + " §cbestaat niet.");
+                sender.sendMessage("§cRegion §e" + region + " §cdoes not exist.");
                 return true;
             }
 
             if (!AttractionManager.exists(name)) {
-                sender.sendMessage("§cAttractie §e" + name + " §cbestaat niet.");
+                sender.sendMessage("§cAttraction §e" + name + " §cdoes not exist.");
                 return true;
             }
 
             Attraction attraction = AttractionManager.getAttraction(name);
             if (!attraction.getRegion().equalsIgnoreCase(region)) {
-                sender.sendMessage("§cAttractie §e" + name + " §cstaat niet in region §e" + region + "§c.");
-                sender.sendMessage("§7Staat in region: §f" + attraction.getRegion());
-                return true;
+                sender.sendMessage("§cAttraction §e" + name + " §cis not in region §e" + region + "§c.");
+                sender.sendMessage("§7Located in region: §f" + attraction.getRegion());
             }
 
         }
@@ -48,7 +47,7 @@ public class DeleteAttraction {
             name = args[2];
 
             if (!AttractionManager.exists(name)) {
-                sender.sendMessage("§cAttractie §e" + name + " §cbestaat niet.");
+                sender.sendMessage("§cAttraction §e" + name + " §cdoes not exist.");
                 return true;
             }
 
@@ -56,27 +55,27 @@ public class DeleteAttraction {
             region = attraction.getRegion();
 
             if (!AttractionConfigManager.regionExists(region)) {
-                sender.sendMessage("§cKon region van attractie §e" + name + " §cniet vinden.");
+                sender.sendMessage("§cCould not find region for attraction §e" + name + "§c.");
                 return true;
             }
         }
 
-        // 🔥 Verwijderen uit memory
+        // 🔥 Removing from memory
         AttractionManager.removeAttraction(name);
 
         if (WarpManager.exists(name)) {
             WarpManager.removeWarp(name);
         }
 
-        // 🔥 Verwijderen uit config
+        // 🔥 Removing from config
         boolean removed = AttractionConfigManager.removeAttraction(region, name);
 
         if (!removed) {
-            sender.sendMessage("§cFout bij verwijderen van attractie uit config.");
+            sender.sendMessage("§cError deleting attraction from config.");
             return true;
         }
 
-        sender.sendMessage("§aAttractie §e" + name + " §ais succesvol verwijderd!");
+        sender.sendMessage("§aAttraction §e" + name + " §ahas been successfully removed!");
         sender.sendMessage("§7Region: §f" + region);
 
         return true;

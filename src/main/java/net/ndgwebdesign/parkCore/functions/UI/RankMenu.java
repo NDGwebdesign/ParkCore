@@ -21,8 +21,7 @@ public class RankMenu {
         Inventory inv = Bukkit.createInventory(
                 null,
                 27,
-                TITLE_PREFIX + target.getName()
-        );
+                TITLE_PREFIX + target.getName());
 
         int slot = 10;
 
@@ -38,15 +37,15 @@ public class RankMenu {
             lore.add("");
 
             if (!rank.getInheritance().isEmpty()) {
-                lore.add("§7Erft van:");
+                lore.add("§7Inherits from:");
                 for (String parent : rank.getInheritance()) {
                     lore.add(" §8- §7" + parent);
                 }
                 lore.add("");
             }
 
-            lore.add("§aKlik om deze rank te zetten");
-            lore.add("§eRechtsklik: Permissions");
+            lore.add("§aClick to set this rank");
+            lore.add("§eRight-click: Permissions");
 
             meta.setLore(lore);
             item.setItemMeta(meta);

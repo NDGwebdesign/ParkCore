@@ -15,7 +15,7 @@ public class PermissionUtil {
         Set<String> perms = new HashSet<>();
 
         /* ========================= */
-        /* 1. Bukkit geregistreerd   */
+        /* 1. Bukkit geregistreerd */
         /* ========================= */
         for (Permission perm : Bukkit.getPluginManager().getPermissions()) {
             perms.add(perm.getName());
@@ -31,14 +31,14 @@ public class PermissionUtil {
         }
 
         /* ========================= */
-        /* 3. Permissions uit ranks  */
+        /* 3. Permissions from ranks */
         /* ========================= */
         for (Rank rank : RankManager.getAllRanks()) {
             perms.addAll(rank.getPermissions());
         }
 
         /* ========================= */
-        /* 4. Wildcard uitbreiding   */
+        /* 4. Wildcard uitbreiding */
         /* ========================= */
         expandWildcards(perms);
 
@@ -67,20 +67,24 @@ public class PermissionUtil {
     }
 
     public static String getPluginFromPermission(String perm) {
-        if (perm == null || !perm.contains(".")) return "other";
+        if (perm == null || !perm.contains("."))
+            return "other";
         return perm.split("\\.")[0].toLowerCase();
     }
 
     public static boolean isValidPermission(String perm) {
-        if (perm == null) return false;
+        if (perm == null)
+            return false;
 
         perm = perm.replace("§", "").trim();
 
         // moet minstens 1 punt hebben (plugin.node)
-        if (!perm.contains(".")) return false;
+        if (!perm.contains("."))
+            return false;
 
         // geen spaties
-        if (perm.contains(" ")) return false;
+        if (perm.contains(" "))
+            return false;
 
         // alleen geldige tekens
         return perm.matches("^[a-zA-Z0-9._*-]+$");

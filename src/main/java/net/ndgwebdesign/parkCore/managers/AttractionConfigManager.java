@@ -17,10 +17,11 @@ public class AttractionConfigManager {
     private static FileConfiguration config;
 
     /**
-     * Zorg dat de config altijd geladen is
+     * Ensure the config is always loaded
      */
     public static void setup() {
-        if (config != null) return; // al geladen
+        if (config != null)
+            return; // al geladen
 
         file = new File(ParkCore.getInstance().getDataFolder(), "attractions.yml");
 
@@ -35,7 +36,7 @@ public class AttractionConfigManager {
 
         config = YamlConfiguration.loadConfiguration(file);
 
-        // Maak basissectie aan als die niet bestaat
+        // Create base section if it does not exist
         if (config.getConfigurationSection("attractions.regions") == null) {
             config.createSection("attractions.regions");
             saveConfig();
@@ -43,22 +44,29 @@ public class AttractionConfigManager {
     }
 
     public static FileConfiguration getConfig() {
-        if (config == null) setup(); // fallback
+        if (config == null)
+            setup(); // fallback
         return config;
     }
 
     public static void saveConfig() {
-        if (config == null) setup();
-        try { config.save(file); } catch (IOException e) { e.printStackTrace(); }
+        if (config == null)
+            setup();
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void reloadConfig() {
-        if (file == null) setup();
+        if (file == null)
+            setup();
         config = YamlConfiguration.loadConfiguration(file);
     }
 
     /* ------------------------------ */
-    /* Attractie functies             */
+    /* Attraction functions */
     /* ------------------------------ */
 
     public static void addAttraction(String region, String name, AttractionStatus status, Location loc) {
@@ -85,7 +93,8 @@ public class AttractionConfigManager {
 
     public static List<String> getAttractions(String region) {
         setup();
-        if (!regionExists(region)) return List.of();
+        if (!regionExists(region))
+            return List.of();
         return List.copyOf(config.getConfigurationSection("attractions.regions." + region).getKeys(false));
     }
 
@@ -99,7 +108,8 @@ public class AttractionConfigManager {
     public static Location getLocation(String region, String name) {
         setup();
         String base = "attractions.regions." + region + "." + name + ".location";
-        if (!config.contains(base)) return null;
+        if (!config.contains(base))
+            return null;
 
         String world = config.getString(base + ".world");
         double x = config.getDouble(base + ".x");
@@ -120,7 +130,7 @@ public class AttractionConfigManager {
 
         config.set(path, null);
 
-        // Als region leeg is, verwijder region ook (optioneel maar netjes)
+        // If region is empty, remove region as well (optional but tidy)
         if (config.getConfigurationSection("attractions.regions." + region).getKeys(false).isEmpty()) {
             config.set("attractions.regions." + region, null);
         }

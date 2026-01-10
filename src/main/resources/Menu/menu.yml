@@ -6,9 +6,9 @@ menu:
     attractions:
       material: MINECART
       slot: 13
-      name: "&eAttracties"
+      name: "&eAttractions"
       lore:
-        - "&7Bekijk alle attracties"
+        - "&7View all attractions"
       action: ATTRACTION_MENU
 
     audio:
@@ -25,6 +25,6 @@ menu:
       slot: 22
       name: "&bRank Manager"
       lore:
-        - "&7Beheer ranks"
+        - "&7Manage ranks"
       permission: parkcore.admin.gui
       action: ADMIN_GUI

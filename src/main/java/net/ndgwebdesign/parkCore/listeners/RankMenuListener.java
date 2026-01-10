@@ -17,44 +17,51 @@ public class RankMenuListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
 
-        if (!(event.getWhoClicked() instanceof Player staff)) return;
+        if (!(event.getWhoClicked() instanceof Player staff))
+            return;
 
         String title = event.getView().getTitle();
-        if (!title.startsWith(RankMenu.TITLE_PREFIX)) return;
+        if (!title.startsWith(RankMenu.TITLE_PREFIX))
+            return;
 
         event.setCancelled(true);
 
         ItemStack item = event.getCurrentItem();
-        if (item == null || !item.hasItemMeta()) return;
-        if (!item.getItemMeta().hasLore()) return;
+        if (item == null || !item.hasItemMeta())
+            return;
+        if (!item.getItemMeta().hasLore())
+            return;
 
-        // 🎯 Target uit title halen
+        // 🎯 Extract target from title
         String targetName = title.replace(RankMenu.TITLE_PREFIX, "");
         Player target = Bukkit.getPlayerExact(targetName);
         if (target == null) {
-            staff.sendMessage("§cSpeler is niet meer online.");
+            staff.sendMessage("§cPlayer is no longer online.");
             staff.closeInventory();
             return;
         }
 
-        // 🎯 Rank ID uit lore halen
+        // 🎯 Extract Rank ID from lore
         List<String> lore = item.getItemMeta().getLore();
-        if (lore == null || lore.isEmpty()) return;
+        if (lore == null || lore.isEmpty())
+            return;
 
         String idLine = lore.get(0);
-        if (!idLine.startsWith("§7ID: §f")) return;
+        if (!idLine.startsWith("§7ID: §f"))
+            return;
 
         String rankId = idLine.replace("§7ID: §f", "");
         Rank rank = RankManager.getRank(rankId);
-        if (rank == null) return;
+        if (rank == null)
+            return;
 
         RankManager.setPlayerRank(target.getName(), rankId);
         RankManager.applyRank(target);
 
-        staff.sendMessage("§aRank van §e" + target.getName()
-                + " §ais gezet naar " + rank.getDisplayName());
+        staff.sendMessage("§aRank of §e" + target.getName()
+                + " §ahas been set to " + rank.getDisplayName());
 
-        target.sendMessage("§aJe rank is veranderd naar " + rank.getDisplayName());
+        target.sendMessage("§aYour rank has been changed to " + rank.getDisplayName());
 
         staff.closeInventory();
     }

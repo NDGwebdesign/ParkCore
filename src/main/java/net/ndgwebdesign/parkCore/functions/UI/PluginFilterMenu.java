@@ -22,23 +22,22 @@ public class PluginFilterMenu {
         Inventory inv = Bukkit.createInventory(
                 null,
                 54,
-                "§8Filter permissions: §e" + rank.getName()
-        );
+                "§8Filter permissions: §e" + rank.getName());
 
         int slot = 0;
         for (String plugin : plugins) {
-            if (slot >= 45) break;
+            if (slot >= 45)
+                break;
 
             ItemStack item = new ItemStack(Material.CHEST);
             ItemMeta meta = item.getItemMeta();
 
             meta.setDisplayName("§e" + plugin);
             meta.setLore(List.of(
-                    "§7Toon alleen permissions",
-                    "§7van deze plugin",
+                    "§7Show only permissions",
+                    "§7from this plugin",
                     "",
-                    "§eKlik om te openen"
-            ));
+                    "§eClick to open"));
 
             item.setItemMeta(meta);
             inv.setItem(slot++, item);

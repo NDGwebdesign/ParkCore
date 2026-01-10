@@ -13,14 +13,15 @@ import java.util.List;
 
 public class RankPermissionSelectMenu {
 
-    public static final String TITLE = "§8Selecteer een rank";
+    public static final String TITLE = "§8Select a rank";
 
     public static void open(Player staff) {
 
         List<Rank> ranks = RankManager.getAllRanks();
 
         int size = ((ranks.size() / 9) + 1) * 9;
-        if (size > 54) size = 54;
+        if (size > 54)
+            size = 54;
 
         Inventory inv = Bukkit.createInventory(null, size, TITLE);
 
@@ -34,8 +35,7 @@ public class RankPermissionSelectMenu {
             meta.setLore(List.of(
                     "§7Rank: §f" + rank.getName(),
                     "",
-                    "§eKlik om permissions te beheren"
-            ));
+                    "§eClick to manage permissions"));
 
             item.setItemMeta(meta);
             inv.setItem(slot++, item);

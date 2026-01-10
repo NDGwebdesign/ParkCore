@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PlayerSelectMenu {
 
-    public static final String TITLE = "§8Selecteer speler";
+    public static final String TITLE = "§8Select a player";
 
     public static void open(Player staff) {
 
@@ -22,7 +22,8 @@ public class PlayerSelectMenu {
 
         for (Player target : Bukkit.getOnlinePlayers()) {
 
-            if (slot >= inv.getSize()) break;
+            if (slot >= inv.getSize())
+                break;
 
             ItemStack head = new ItemStack(Material.PLAYER_HEAD);
             SkullMeta meta = (SkullMeta) head.getItemMeta();
@@ -31,7 +32,7 @@ public class PlayerSelectMenu {
             meta.setDisplayName("§e" + target.getName());
 
             List<String> lore = new ArrayList<>();
-            lore.add("§7Klik om rank te wijzigen");
+            lore.add("§7Click to change rank");
             meta.setLore(lore);
 
             head.setItemMeta(meta);

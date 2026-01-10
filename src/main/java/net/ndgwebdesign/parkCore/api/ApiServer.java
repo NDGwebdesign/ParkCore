@@ -2,6 +2,7 @@ package net.ndgwebdesign.parkCore.api;
 
 import com.google.gson.Gson;
 import net.ndgwebdesign.parkCore.ParkCore;
+import net.ndgwebdesign.parkCore.api.dto.AttractionDTO;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.objects.AttractionStatus;
@@ -128,9 +129,15 @@ public class ApiServer {
 
     private void handleGetAttraction(PrintWriter out, String[] args) {
 
-       file = new File(ParkCore.getInstance().getDataFolder(), "attractions.yml");
+        List<AttractionDTO> dtoList = AttractionManager.getAllAttractions()
+                .stream()
+                .map(AttractionDTO::from)
+                .toList();
 
+        String json = gson.toJson(dtoList);
+        out.println("OK " + json);
 
     }
+
 
 }

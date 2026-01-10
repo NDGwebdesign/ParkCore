@@ -16,33 +16,37 @@ public class RankPermissionMenuListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
 
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (!event.getView().getTitle().startsWith("§8Permissions:")) return;
+        if (!(event.getWhoClicked() instanceof Player player))
+            return;
+        if (!event.getView().getTitle().startsWith("§8Permissions:"))
+            return;
 
         event.setCancelled(true);
 
         ItemStack item = event.getCurrentItem();
-        if (item == null || !item.hasItemMeta()) return;
+        if (item == null || !item.hasItemMeta())
+            return;
 
         String title = event.getView().getTitle();
         String rankName = title.split("§e")[1].split(" ")[0];
         Rank rank = RankManager.getRank(rankName);
-        if (rank == null) return;
+        if (rank == null)
+            return;
 
         String display = item.getItemMeta().getDisplayName();
 
-        // Pagina navigatie
-        if (display.contains("Vorige")) {
+        // Page navigation
+        if (display.contains("Previous")) {
             RankPermissionMenu.open(player, rank, getPage(title) - 1);
             return;
         }
 
-        if (display.contains("Volgende")) {
+        if (display.contains("Next")) {
             RankPermissionMenu.open(player, rank, getPage(title) + 1);
             return;
         }
 
-        // ✅ PERMISSION CORRECT UIT GUI HALEN
+        // ✅ Extract permission correctly from GUI
         String clean = ChatColor.stripColor(display);
         String perm = display.replace("§a ", "")
                 .replace("§c ", "")
@@ -53,13 +57,12 @@ public class RankPermissionMenuListener implements Listener {
             return;
         }
 
-
         if (rank.getPermissions().contains(perm)) {
             RankManager.removePermission(rank.getName(), perm);
-            player.sendMessage("§cPermission §e" + perm + " §cis verwijderd");
+            player.sendMessage("§cPermission §e" + perm + " §chas been removed");
         } else {
             RankManager.addPermission(rank.getName(), perm);
-            player.sendMessage("§aPermission §e" + perm + " §ais toegevoegd");
+            player.sendMessage("§aPermission §e" + perm + " §ahas been added");
         }
 
         RankPermissionMenu.open(player, rank, getPage(title));

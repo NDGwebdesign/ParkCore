@@ -19,7 +19,7 @@ public class PlayerJoinListener implements Listener {
         meta.setDisplayName("§6Park Menu");
         star.setItemMeta(meta);
 
-        // Geef alleen als speler er nog geen heeft
+        // Give only if player doesn't have one yet
         if (!player.getInventory().contains(star)) {
             player.getInventory().setItem(4, star);
         }

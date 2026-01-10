@@ -17,7 +17,8 @@ public class PermissionSearchListener implements Listener {
 
         Player player = e.getPlayer();
         Rank rank = PermissionSearchSession.get(player);
-        if (rank == null) return;
+        if (rank == null)
+            return;
 
         e.setCancelled(true);
 
@@ -25,14 +26,13 @@ public class PermissionSearchListener implements Listener {
 
         if (msg.equals("cancel")) {
             PermissionSearchSession.stop(player);
-            player.sendMessage("§cZoeken geannuleerd.");
+            player.sendMessage("§cSearch cancelled.");
             return;
         }
 
         Bukkit.getScheduler().runTask(
                 ParkCore.getInstance(),
-                () -> RankPermissionMenu.openSearch(player, rank, msg, 0)
-        );
+                () -> RankPermissionMenu.openSearch(player, rank, msg, 0));
 
         PermissionSearchSession.stop(player);
     }

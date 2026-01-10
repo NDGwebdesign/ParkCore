@@ -11,7 +11,7 @@ public class StatusAttraction {
     public boolean execute(CommandSender sender, String[] args) {
 
         if (args.length < 4) {
-            sender.sendMessage("§eGebruik: /parkcore att status <attractie> <open|closed|maintenance>");
+            sender.sendMessage("§eUsage: /parkcore att status <attraction> <open|closed|maintenance>");
             return true;
         }
 
@@ -19,7 +19,7 @@ public class StatusAttraction {
         String statusArg = args[3].toUpperCase();
 
         if (!AttractionManager.exists(attractionName)) {
-            sender.sendMessage("§cAttractie §e" + attractionName + " §cbestaat niet.");
+            sender.sendMessage("§cAttraction §e" + attractionName + " §cdoes not exist.");
             return true;
         }
 
@@ -27,23 +27,22 @@ public class StatusAttraction {
         try {
             status = AttractionStatus.valueOf(statusArg);
         } catch (IllegalArgumentException ex) {
-            sender.sendMessage("§cOngeldige status. Gebruik: open, closed of maintenance.");
+            sender.sendMessage("§cInvalid status. Use: open, closed or maintenance.");
             return true;
         }
 
         Attraction attraction = AttractionManager.getAttraction(attractionName);
         attraction.setStatus(status);
 
-        // Opslaan in config
+        // Save in config
         AttractionConfigManager.addAttraction(
                 attraction.getRegion(),
                 attractionName,
                 status,
-                attraction.getLocation()
-        );
+                attraction.getLocation());
 
-        sender.sendMessage("§aStatus van attractie §e" + attractionName
-                + " §ais nu §f" + formatStatus(status) + "§a.");
+        sender.sendMessage("§aStatus of attraction §e" + attractionName
+                + " §ais now §f" + formatStatus(status) + "§a.");
 
         return true;
     }

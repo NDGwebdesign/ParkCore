@@ -15,30 +15,36 @@ public class MenuClickListener implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent event) {
 
-        if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (event.getView().getTitle() == null) return;
+        if (!(event.getWhoClicked() instanceof Player player))
+            return;
+        if (event.getView().getTitle() == null)
+            return;
 
         String title = event.getView().getTitle();
         String menuTitle = ParkCore.getInstance().getMenuConfig()
                 .getString("menu.title")
                 .replace("&", "§");
 
-        if (!title.equals(menuTitle)) return;
+        if (!title.equals(menuTitle))
+            return;
 
         event.setCancelled(true);
 
-        if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem() == null)
+            return;
 
         int slot = event.getSlot();
 
         var items = ParkCore.getInstance().getMenuConfig()
                 .getConfigurationSection("menu.items");
 
-        if (items == null) return;
+        if (items == null)
+            return;
 
         for (String key : items.getKeys(false)) {
             var item = items.getConfigurationSection(key);
-            if (item == null) continue;
+            if (item == null)
+                continue;
 
             if (item.getInt("slot") == slot) {
 
@@ -55,7 +61,6 @@ public class MenuClickListener implements Listener {
                     AttractionMenu.open(player, firstRegion);
                 }
 
-
                 if ("COMMAND".equalsIgnoreCase(action)) {
                     String cmd = item.getString("command");
                     player.closeInventory();
@@ -65,7 +70,7 @@ public class MenuClickListener implements Listener {
                 if ("ADMIN_GUI".equalsIgnoreCase(action)) {
 
                     if (!player.hasPermission(item.getString("permission"))) {
-                        player.sendMessage("§cJe hebt geen permissie hiervoor.");
+                        player.sendMessage("§cYou do not have permission for this.");
                         return;
                     }
 

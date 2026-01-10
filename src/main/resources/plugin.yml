@@ -47,23 +47,23 @@ permissions:
       default: op
 
   parkcore.rank.gui:
-    description: Toegang tot Rank GUI
+    description: Access to Rank GUI
     default: op
 
   parkcore.rank.create:
-    description: Rank aanmaken
+    description: Create rank
     default: op
 
   parkcore.rank.delete:
-    description: Rank verwijderen
+    description: Delete rank
     default: op
 
   parkcore.rank.permission:
-    description: Rank permissies beheren
+    description: Manage rank permissions
     default: op
 
   parkcore.admin.gui:
-    description: Toegang tot Admin GUI
+    description: Access to Admin GUI
     default: op
 
 #  gamemode permissions

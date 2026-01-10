@@ -16,31 +16,28 @@ public class AdminMenu {
         Inventory inv = Bukkit.createInventory(
                 null,
                 9,
-                TITLE
-        );
+                TITLE);
 
         // 📘 Rank Manager
         ItemStack rankManager = new ItemStack(Material.BOOK);
         ItemMeta rankMeta = rankManager.getItemMeta();
         rankMeta.setDisplayName("§eRank Manager");
         rankMeta.setLore(java.util.List.of(
-                "§7Beheer ranks",
+                "§7Manage ranks",
                 "",
-                "§eKlik om te openen"
-        ));
+                "§eClick to open"));
         rankManager.setItemMeta(rankMeta);
 
         inv.setItem(4, rankManager);
 
-        //permission manager
+        // permission manager
         ItemStack permissionManager = new ItemStack(Material.ENCHANTED_BOOK);
         ItemMeta permissionMeta = permissionManager.getItemMeta();
         permissionMeta.setDisplayName("§ePermission Manager");
         permissionMeta.setLore(java.util.List.of(
-                "§7Beheer permissies",
+                "§7Manage permissions",
                 "",
-                "§eKlik om te openen"
-        ));
+                "§eClick to open"));
         permissionManager.setItemMeta(permissionMeta);
         inv.setItem(2, permissionManager);
 

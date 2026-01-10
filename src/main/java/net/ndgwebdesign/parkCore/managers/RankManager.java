@@ -26,12 +26,13 @@ public class RankManager {
     private static FileConfiguration playersConfig;
 
     /* ===================== */
-    /* Setup                 */
+    /* Setup */
     /* ===================== */
     public static void setup() {
 
         File folder = new File(ParkCore.getInstance().getDataFolder(), "Ranks");
-        if (!folder.exists()) folder.mkdirs();
+        if (!folder.exists())
+            folder.mkdirs();
 
         ranksFile = new File(folder, "ranks.yml");
         playersFile = new File(folder, "players.yml");
@@ -51,13 +52,14 @@ public class RankManager {
     }
 
     /* ===================== */
-    /* Load ranks            */
+    /* Load ranks */
     /* ===================== */
     private static void loadRanks() {
 
         ranks.clear();
         ConfigurationSection section = ranksConfig.getConfigurationSection("ranks");
-        if (section == null) return;
+        if (section == null)
+            return;
 
         for (String key : section.getKeys(false)) {
 
@@ -68,7 +70,7 @@ public class RankManager {
             rank.setPrefix(color(ranksConfig.getString(path + ".prefix")));
             rank.setSuffix(color(ranksConfig.getString(path + ".suffix")));
 
-            // ✅ permissions zonder extra tekens
+            // ✅ permissions without extra characters
             rank.getPermissions().clear();
             for (String perm : ranksConfig.getStringList(path + ".permissions")) {
                 rank.getPermissions().add(perm.trim());
@@ -82,11 +84,12 @@ public class RankManager {
     }
 
     /* ===================== */
-    /* Create / Delete       */
+    /* Create / Delete */
     /* ===================== */
     public static void createRank(String name) {
         name = name.toLowerCase();
-        if (ranks.containsKey(name)) return;
+        if (ranks.containsKey(name))
+            return;
 
         String path = "ranks." + name;
         ranksConfig.set(path + ".display_name", "&7" + name);
@@ -101,7 +104,8 @@ public class RankManager {
 
     public static void deleteRank(String name) {
         name = name.toLowerCase();
-        if (name.equals("visitor") || !ranks.containsKey(name)) return;
+        if (name.equals("visitor") || !ranks.containsKey(name))
+            return;
 
         ranksConfig.set("ranks." + name, null);
         saveRanksFile();
@@ -109,22 +113,24 @@ public class RankManager {
     }
 
     /* ===================== */
-    /* Permissions           */
+    /* Permissions */
     /* ===================== */
     public static Set<String> getAllPermissions(Rank rank) {
         Set<String> perms = new HashSet<>(rank.getPermissions());
         for (String parent : rank.getInheritance()) {
             Rank parentRank = getRank(parent);
-            if (parentRank != null) perms.addAll(getAllPermissions(parentRank));
+            if (parentRank != null)
+                perms.addAll(getAllPermissions(parentRank));
         }
         return perms;
     }
 
     public static void addPermission(String rankName, String permission) {
         Rank rank = getRank(rankName);
-        if (rank == null) return;
-        if (!PermissionUtil.isValidPermission(permission)) return;
-
+        if (rank == null)
+            return;
+        if (!PermissionUtil.isValidPermission(permission))
+            return;
 
         permission = permission.trim().replace("§", ""); // ✅ altijd schoon
 
@@ -132,7 +138,7 @@ public class RankManager {
             rank.getPermissions().add(permission);
             saveRank(rank);
 
-            // meteen toepassen bij online spelers
+            // apply immediately to online players
             for (Player p : ParkCore.getInstance().getServer().getOnlinePlayers()) {
                 if (getPlayerRank(p.getName()).getName().equals(rankName)) {
                     applyRank(p);
@@ -143,7 +149,8 @@ public class RankManager {
 
     public static void removePermission(String rankName, String permission) {
         Rank rank = getRank(rankName);
-        if (rank == null) return;
+        if (rank == null)
+            return;
 
         permission = permission.trim().replace("§", ""); // ✅ altijd schoon
 
@@ -158,22 +165,23 @@ public class RankManager {
         }
     }
 
-
     /* ===================== */
-    /* Player ranks          */
+    /* Player ranks */
     /* ===================== */
     public static void setPlayerRank(String playerName, String rankName) {
         playersConfig.set("players." + playerName + ".rank", rankName.toLowerCase());
         savePlayersFile();
 
         Player player = ParkCore.getInstance().getServer().getPlayerExact(playerName);
-        if (player != null) applyRank(player);
+        if (player != null)
+            applyRank(player);
     }
 
     public static void applyRank(Player player) {
 
         Rank rank = getPlayerRank(player.getName());
-        if (rank == null) return;
+        if (rank == null)
+            return;
 
         // Reuse existing attachment or create a new one if it doesn't exist
         PermissionAttachment attachment = attachments.get(player.getUniqueId());
@@ -197,9 +205,8 @@ public class RankManager {
         player.setDisplayName(rank.getPrefix() + player.getName() + rank.getSuffix());
     }
 
-
     /* ===================== */
-    /* Save / Reload         */
+    /* Save / Reload */
     /* ===================== */
     public static void saveRank(Rank rank) {
 
@@ -221,23 +228,29 @@ public class RankManager {
         saveRanksFile();
     }
 
-
-
     public static void reloadRanks() {
         ranksConfig = YamlConfiguration.loadConfiguration(ranksFile);
         loadRanks();
     }
 
     private static void saveRanksFile() {
-        try { ranksConfig.save(ranksFile); } catch (IOException e) { e.printStackTrace(); }
+        try {
+            ranksConfig.save(ranksFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void savePlayersFile() {
-        try { playersConfig.save(playersFile); } catch (IOException e) { e.printStackTrace(); }
+        try {
+            playersConfig.save(playersFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /* ===================== */
-    /* Utils                 */
+    /* Utils */
     /* ===================== */
     private static String color(String s) {
         return s == null ? "" : ChatColor.translateAlternateColorCodes('&', s);
@@ -248,19 +261,23 @@ public class RankManager {
     }
 
     /* ===================== */
-    /* Getters               */
+    /* Getters */
     /* ===================== */
     public static Rank getRank(String name) {
-        if (name == null) return null;
+        if (name == null)
+            return null;
         return ranks.get(name.toLowerCase());
     }
 
-    public static List<Rank> getAllRanks() { return new ArrayList<>(ranks.values()); }
+    public static List<Rank> getAllRanks() {
+        return new ArrayList<>(ranks.values());
+    }
 
     public static Rank getRankByDisplay(String display) {
         for (Rank rank : ranks.values()) {
             if (ChatColor.stripColor(rank.getDisplayName())
-                    .equalsIgnoreCase(ChatColor.stripColor(display))) return rank;
+                    .equalsIgnoreCase(ChatColor.stripColor(display)))
+                return rank;
         }
         return null;
     }

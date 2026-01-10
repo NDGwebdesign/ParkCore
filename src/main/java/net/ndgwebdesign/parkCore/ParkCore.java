@@ -4,7 +4,7 @@ import net.ndgwebdesign.parkCore.api.ApiServer;
 import net.ndgwebdesign.parkCore.commands.GamemodeCommand;
 import net.ndgwebdesign.parkCore.commands.ParkCoreCommand;
 import net.ndgwebdesign.parkCore.commands.WarpCommand;
-import net.ndgwebdesign.parkCore.commands.tab.RankTabCompleter;
+import net.ndgwebdesign.parkCore.commands.tab.ParkCoreTabCompleter;
 import net.ndgwebdesign.parkCore.listeners.*;
 import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
@@ -36,15 +36,13 @@ public final class ParkCore extends JavaPlugin {
         saveDefaultConfig();
         saveResource("Menu/menu.yml", false);
         menuConfig = YamlConfiguration.loadConfiguration(
-                new File(getDataFolder(), "Menu/menu.yml")
-        );
-
+                new File(getDataFolder(), "Menu/menu.yml"));
 
         AttractionConfigManager.setup();
         WarpManager.setup();
         RankManager.setup();
 
-        // Laad alle attracties
+        // Load all attractions
         loadAttractions();
 
         loadAllConfigFiles();
@@ -58,7 +56,7 @@ public final class ParkCore extends JavaPlugin {
         getCommand("gma").setExecutor(new GamemodeCommand());
         getCommand("gmsp").setExecutor(new GamemodeCommand());
 
-        //register events
+        // register events
         Bukkit.getPluginManager().registerEvents(new RidePanelChatListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
         Bukkit.getPluginManager().registerEvents(new MenuItemListener(), this);
@@ -66,7 +64,7 @@ public final class ParkCore extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new AttractionMenuClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new AttractionSignCreateListener(), this);
 
-        //rank events
+        // rank events
         Bukkit.getPluginManager().registerEvents(new PlayerJoinRankListener(), this);
         Bukkit.getPluginManager().registerEvents(new RankMenuListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerSelectMenuListener(), this);
@@ -76,8 +74,8 @@ public final class ParkCore extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PluginFilterMenuListener(), this);
         getServer().getPluginManager().registerEvents(new PermissionSearchListener(), this);
 
-        //tab complete
-        getCommand("parkcore").setTabCompleter(new RankTabCompleter());
+        // tab complete
+        getCommand("parkcore").setTabCompleter(new ParkCoreTabCompleter());
 
         // Start API Server
         apiServer = new ApiServer(this, getConfig().getInt("api.port"));
@@ -124,17 +122,18 @@ public final class ParkCore extends JavaPlugin {
     }
 
     /* ---------------------------------------------------------------------- */
-    /* Attracties laden bij plugin start                                      */
+    /* Load attractions on plugin start */
     /* ---------------------------------------------------------------------- */
     private void loadAttractions() {
         AttractionConfigManager.setup();
 
-        // Haal alle regio's op
-        for (String region : AttractionConfigManager.getConfig().getConfigurationSection("attractions.regions").getKeys(false)) {
-            // Haal alle attracties in de regio op
+        // Get all regions
+        for (String region : AttractionConfigManager.getConfig().getConfigurationSection("attractions.regions")
+                .getKeys(false)) {
+            // Get all attractions in the region
             for (String name : AttractionConfigManager.getAttractions(region)) {
 
-                // Maak een nieuwe attractie object
+                // Create a new attraction object
                 Attraction attraction = new Attraction(name, region);
 
                 // Laad status
@@ -145,14 +144,14 @@ public final class ParkCore extends JavaPlugin {
                     attraction.setLocation(AttractionConfigManager.getLocation(region, name));
                 }
 
-                // Voeg toe aan de manager
+                // Add to the manager
                 AttractionManager.addAttraction(attraction);
             }
         }
     }
 
     public RideOperateHook getRideOperateHook() {
-        // Controleer of de RideOperate plugin actief is
+        // Check if the RideOperate plugin is active
         if (Bukkit.getPluginManager().getPlugin("RideOperate") != null) {
             return new RideOperateHook(this);
         }

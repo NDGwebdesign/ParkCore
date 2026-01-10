@@ -2,10 +2,7 @@ package net.ndgwebdesign.parkCore.managers;
 
 import net.ndgwebdesign.parkCore.objects.Attraction;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AttractionManager {
 
@@ -30,5 +27,10 @@ public class AttractionManager {
     public static Collection<Attraction> getAll() {
         return Collections.unmodifiableCollection(attractions.values());
     }
+
+    public static List<Attraction> getAllAttractions() {
+        return new ArrayList<>(attractions.values());
+    }
+
 
 }

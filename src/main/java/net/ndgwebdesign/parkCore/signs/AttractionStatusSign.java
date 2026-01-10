@@ -12,10 +12,11 @@ public class AttractionStatusSign {
         if (loc.getBlock().getState() instanceof Sign sign) {
 
             AttractionStatus status = attraction.getStatus();
-            if (status == null) status = AttractionStatus.CLOSED;
+            if (status == null)
+                status = AttractionStatus.CLOSED;
 
             sign.setLine(0, "§6[ParkCore]");
-            sign.setLine(1, "§eAttractie");
+            sign.setLine(1, "§eAttraction");
             sign.setLine(2, "§f" + attraction.getName());
             sign.setLine(3, formatStatus(status));
 

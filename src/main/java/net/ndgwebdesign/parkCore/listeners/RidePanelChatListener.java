@@ -15,7 +15,8 @@ public class RidePanelChatListener implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (!RidePanelConfirmationManager.has(player)) return;
+        if (!RidePanelConfirmationManager.has(player))
+            return;
 
         event.setCancelled(true);
 
@@ -29,7 +30,7 @@ public class RidePanelChatListener implements Listener {
                         .getRideOperateHook()
                         .createPanel(player, request.getAttractionName());
 
-                player.sendMessage("§aRideOperate panel aangemaakt met naam §e"
+                player.sendMessage("§aRideOperate panel created with name §e"
                         + request.getAttractionName() + "§a!");
             });
 
@@ -38,11 +39,11 @@ public class RidePanelChatListener implements Listener {
         }
 
         if (msg.equals("nee") || msg.equals("no")) {
-            player.sendMessage("§eAanmaken van RideOperate panel geannuleerd.");
+            player.sendMessage("§eRideOperate panel creation cancelled.");
             RidePanelConfirmationManager.remove(player);
             return;
         }
 
-        player.sendMessage("§7Typ §aJA §7of §cNEE §7om te antwoorden.");
+        player.sendMessage("§7Type §aYES §7or §cNO §7to answer.");
     }
 }

@@ -14,27 +14,29 @@ public class AttractionSignCreateListener implements Listener {
     @EventHandler
     public void onSignCreate(SignChangeEvent event) {
 
-        if (!"[parkcore]".equalsIgnoreCase(event.getLine(0))) return;
-        if (!"attraction".equalsIgnoreCase(event.getLine(1))) return;
+        if (!"[parkcore]".equalsIgnoreCase(event.getLine(0)))
+            return;
+        if (!"attraction".equalsIgnoreCase(event.getLine(1)))
+            return;
 
         String attractionName = event.getLine(2);
         if (attractionName == null || attractionName.isEmpty()) {
-            event.getPlayer().sendMessage("§cGeen attractienaam opgegeven.");
+            event.getPlayer().sendMessage("§cNo attraction name provided.");
             return;
         }
 
         if (!AttractionManager.exists(attractionName)) {
-            event.getPlayer().sendMessage("§cAttractie bestaat niet.");
+            event.getPlayer().sendMessage("§cAttraction does not exist.");
             return;
         }
 
         Attraction attraction = AttractionManager.getAttraction(attractionName);
 
-        // Zet alvast de eerste 3 regels
+        // Set initial lines
         event.setLine(0, "§6[ParkCore]");
-        event.setLine(1, "§eAttractie");
+        event.setLine(1, "§eAttraction");
         event.setLine(2, "§f" + attractionName);
-        event.setLine(3, "§7Laden...");
+        event.setLine(3, "§7Loading...");
 
         // BELANGRIJK: update pas NA 1 tick
         Bukkit.getScheduler().runTask(
@@ -42,13 +44,11 @@ public class AttractionSignCreateListener implements Listener {
                 () -> {
                     AttractionStatusSign.update(
                             event.getBlock().getLocation(),
-                            attraction
-                    );
+                            attraction);
                     attraction.addSign(event.getBlock().getLocation());
-                }
-        );
+                });
 
-        event.getPlayer().sendMessage("§aAttractie statusbord aangemaakt!");
+        event.getPlayer().sendMessage("§aAttraction status sign created!");
     }
 
 }

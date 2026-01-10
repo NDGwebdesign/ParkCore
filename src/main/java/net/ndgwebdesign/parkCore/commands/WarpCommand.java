@@ -46,8 +46,7 @@ public class WarpCommand implements CommandExecutor {
 
                 sender.sendMessage("§aWarp §e" + name + " §ccreated!");
                 return true;
-            }
-            else {
+            } else {
                 sender.sendMessage("§cYou don't have permission to that.");
             }
         }
@@ -64,15 +63,14 @@ public class WarpCommand implements CommandExecutor {
                 String name = args[1];
 
                 if (!WarpManager.exists(name)) {
-                    sender.sendMessage("§cWarp bestaat niet.");
+                    sender.sendMessage("§cWarp does not exist.");
                     return true;
                 }
 
                 WarpManager.deleteWarp(name);
                 sender.sendMessage("§aWarp §e" + name + " §averwijderd!");
                 return true;
-            }
-            else {
+            } else {
                 sender.sendMessage("§cYou don't have permission to that.");
             }
         }
