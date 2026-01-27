@@ -30,7 +30,10 @@ public class ParkCoreTabCompleter implements TabCompleter {
         if (args.length == 1) {
             completions.add("att");
             completions.add("attraction");
+            completions.add("help");
             completions.add("rank");
+            completions.add("reload");
+            completions.add("info");
             return filter(completions, args[0]);
         }
 

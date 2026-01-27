@@ -15,47 +15,41 @@ public class RankPermissionMenuListener implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-
         if (!(event.getWhoClicked() instanceof Player player))
             return;
-        if (!event.getView().getTitle().startsWith("§8Permissions:"))
+        String title = event.getView().getTitle();
+        if (!title.startsWith("§8Permissions:"))
             return;
 
         event.setCancelled(true);
-
         ItemStack item = event.getCurrentItem();
         if (item == null || !item.hasItemMeta())
             return;
 
-        String title = event.getView().getTitle();
-        String rankName = title.split("§e")[1].split(" ")[0];
+        String rankName = ChatColor.stripColor(title.split("§e")[1].split(" ")[0]);
         Rank rank = RankManager.getRank(rankName);
         if (rank == null)
             return;
 
         String display = item.getItemMeta().getDisplayName();
+        String clean = ChatColor.stripColor(display);
 
-        // Page navigation
-        if (display.contains("Previous")) {
+        // Page buttons
+        if (clean.equalsIgnoreCase("Previous")) {
             RankPermissionMenu.open(player, rank, getPage(title) - 1);
             return;
         }
-
-        if (display.contains("Next")) {
+        if (clean.equalsIgnoreCase("Next")) {
             RankPermissionMenu.open(player, rank, getPage(title) + 1);
             return;
         }
-
-        // ✅ Extract permission correctly from GUI
-        String clean = ChatColor.stripColor(display);
-        String perm = display.replace("§a ", "")
-                .replace("§c ", "")
-                .trim();
-
-        if (!PermissionUtil.isValidPermission(perm)) {
-            // Klik was op zoek/filter/knop → negeren
+        if (clean.equalsIgnoreCase("Search") || clean.equalsIgnoreCase("Filter by plugin"))
             return;
-        }
+
+        // Toggle permission
+        String perm = clean.replace("✔ ", "").replace("✖ ", "").trim();
+        if (!PermissionUtil.isValidPermission(perm))
+            return;
 
         if (rank.getPermissions().contains(perm)) {
             RankManager.removePermission(rank.getName(), perm);

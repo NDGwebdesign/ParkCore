@@ -17,6 +17,7 @@ permissions:
         parkcore.rank.permission: true
         parkcore.admin.gui: true
         parkcore.gamemode: true
+        parkcore.reload: true
 
   parkcore.visitor:
     description: Visitor permission for ParkCore
@@ -83,6 +84,9 @@ permissions:
     description: Permission to use /gmsp
     default: op
 
+  parkcore.reload:
+    description: Allows reloading ParkCore
+    default: op
 
 commands:
   parkcore:

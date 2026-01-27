@@ -4,6 +4,7 @@ import net.ndgwebdesign.parkCore.managers.AttractionConfigManager;
 import net.ndgwebdesign.parkCore.managers.AttractionManager;
 import net.ndgwebdesign.parkCore.objects.Attraction;
 import net.ndgwebdesign.parkCore.objects.AttractionStatus;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 public class StatusAttraction {
@@ -43,6 +44,11 @@ public class StatusAttraction {
 
         sender.sendMessage("§aStatus of attraction §e" + attractionName
                 + " §ais now §f" + formatStatus(status) + "§a.");
+
+        //notify all players
+        Bukkit.broadcastMessage(
+                "§e[Attraction Update] §f" + attractionName + " §ais now §f"
+                        + formatStatus(status) + "§a.");
 
         return true;
     }

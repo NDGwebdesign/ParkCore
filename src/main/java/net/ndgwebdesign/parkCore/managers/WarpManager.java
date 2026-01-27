@@ -19,7 +19,7 @@ public class WarpManager {
     private static FileConfiguration config;
 
     /* -------------------- */
-    /* Setup                */
+    /* Setup */
     /* -------------------- */
 
     public static void setup() {
@@ -38,13 +38,14 @@ public class WarpManager {
     }
 
     /* -------------------- */
-    /* Load / Save           */
+    /* Load / Save */
     /* -------------------- */
 
     public static void loadWarps() {
         warps.clear();
 
-        if (!config.contains("warps")) return;
+        if (!config.contains("warps"))
+            return;
 
         for (String name : config.getConfigurationSection("warps").getKeys(false)) {
 
@@ -57,8 +58,7 @@ public class WarpManager {
                     config.getDouble(base + ".y"),
                     config.getDouble(base + ".z"),
                     (float) config.getDouble(base + ".yaw"),
-                    (float) config.getDouble(base + ".pitch")
-            );
+                    (float) config.getDouble(base + ".pitch"));
 
             warps.put(name.toLowerCase(), new Warp(name, loc));
         }
@@ -86,15 +86,16 @@ public class WarpManager {
     }
 
     public static void createWarp(String name, Location location) {
-        if (exists(name)) return;
+        if (exists(name))
+            return;
         saveWarp(new Warp(name, location));
     }
 
     public static void removeWarp(String name) {
-        if (!exists(name)) return;
+        if (!exists(name))
+            return;
         deleteWarp(name);
     }
-
 
     private static void saveFile() {
         try {
@@ -105,7 +106,7 @@ public class WarpManager {
     }
 
     /* -------------------- */
-    /* Getters               */
+    /* Getters */
     /* -------------------- */
 
     public static boolean exists(String name) {
@@ -114,5 +115,9 @@ public class WarpManager {
 
     public static Warp getWarp(String name) {
         return warps.get(name.toLowerCase());
+    }
+
+    public static int getWarpCount() {
+        return warps.size();
     }
 }
